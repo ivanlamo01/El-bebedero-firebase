@@ -29,11 +29,7 @@ button:{
   height:"70px",
   backgroundColor:"#202d56"
 },
-
-
 }
-
-
 function ProductosAlta() {
   
   const { register, handleSubmit, formState: { errors } } = useForm({mode:"onChange"});
@@ -51,8 +47,6 @@ function ProductosAlta() {
     }
   };
 
-
-
   return (
     <div>
         <div style={style.separador}>
@@ -60,11 +54,6 @@ function ProductosAlta() {
         </div>
       <Container style={style.container}>
       <Form onSubmit={handleSubmit(onSubmit)}>
-            <Input label="Imagen"   register={{...register("thumbnail", { required: true })}} />
-                  {errors.email && (
-                    <div>
-                        <span>This field is required</span>
-                    </div>)}
             <Input label="Precio" register={{...register("price", { required: true })}}/>
                 {errors.nombre && (
                 <div>

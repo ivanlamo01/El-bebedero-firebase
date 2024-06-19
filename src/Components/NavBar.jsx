@@ -68,6 +68,7 @@ function NavBar(){
                     <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto" >
                         <Nav.Link as={Link} to="/" >Home</Nav.Link>
+                        <Nav.Link as={Link} to="/inventario" >Inventario</Nav.Link>
                             {login &&(
                                 <>
                                     <Nav.Link as={Link} to="/productos/ProductosAlta">Agregar Producto</Nav.Link>

@@ -1,8 +1,8 @@
-import Producto from  "./Producto"
+
 import Button from "react-bootstrap/Button"
-import Row from "react-bootstrap/Row";
 import Loading from "./Loading/Loading"
 import { useFetchProducts } from "../Utils/useFetchProducts";
+import Tabla from "./tabla";
 
 const style={
     button:{
@@ -16,7 +16,7 @@ const style={
 }
 
 function Productos(){  
-    const {productos,loading,buscar,setBuscar}=useFetchProducts()
+    const {loading,buscar,setBuscar}=useFetchProducts()
         return (
                 <>
                     <Loading loading={loading}>
@@ -24,15 +24,10 @@ function Productos(){
                     <input type="text"  onChange={(event)=>setBuscar(event.target.value)} />
                     <Button variant="primary" type="submit" value={buscar} style={style.button}>Buscar</Button>
                     </div>
-
-                    <Row>
-                        {productos.map((product) => (
-                            <Producto{...product.data()}
-                                key={product.id}
-                                id={ product.id }
-                            />)
-                        )}
-                    </Row>
+                    
+                    <div>
+                        <Tabla/>
+                    </div>
                     </Loading>
                 </>
             );

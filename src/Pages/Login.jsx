@@ -9,7 +9,6 @@ import { useAuthContext } from "../Context/AuthContext";
 import { getByUserId } from "../Services/usuariosServices";
 import {Button, Spinner } from "react-bootstrap"
 
-
 const style={
     separador:{
         height:"500px",
@@ -37,15 +36,12 @@ const style={
     }
 }
 
-
-
 function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm({mode:"onChange"});
     const [alert,setAlert] = useState({variant:"",text:""})
     const[loading, setLoading] = useState(false)
     const {handleLogin} = useAuthContext()
     
-
     const onSubmit = async (data) =>{
         setLoading(true)
         try {
@@ -68,7 +64,6 @@ function Login() {
         } 
     };
     
-
     return (
         <>
             <div>
