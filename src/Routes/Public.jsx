@@ -1,4 +1,5 @@
 import Registro from '../Pages/Registro';
+import Inventario from '../Pages/Inventario';
 import Login from '../Pages/Login';
 import NavBar from '../Components/NavBar';
 import DetalleProd from '../Pages/DetalleProd';
@@ -10,7 +11,6 @@ import ProductosModificar from '../Pages/ProductosModificar';
 import AuthProvider from '../Context/AuthContext';
 import Footer from "../Components/footer"
 
-
 function Public() {
     
     return (
@@ -19,6 +19,7 @@ function Public() {
             <NavBar />
                 <Routes>
                     <Route  path="/" element={<Home/>} />
+                    <Route  path="/inventario" element={<Inventario/>} />
                     <Route  path="/alta" element={<Registro/>}/>
                     <Route  path="/ingresar" element={<Login/>}/>
                     <Route  path="/detalle/:detalleId" element={<DetalleProd />}/>
