@@ -1,0 +1,15 @@
+.App{
+    font-family: Visby CF,sans-serif;
+}
+
+.button {
+    width:100px;
+    height:50px;
+    background-color:#202d56;
+    border-radius:15px;
+}
+
+.button:hover{
+    background-color:#f44c7f ;
+    transition: background-color 0.5s ;
+}
