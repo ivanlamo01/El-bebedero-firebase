@@ -1,4 +1,5 @@
 import Registro from '../Pages/Registro';
+import Venta from '../Pages/venta';
 import Inventario from '../Pages/Inventario';
 import Login from '../Pages/Login';
 import NavBar from '../Components/NavBar';
@@ -20,6 +21,7 @@ function Public() {
                 <Routes>
                     <Route  path="/" element={<Home/>} />
                     <Route  path="/inventario" element={<Inventario/>} />
+                    <Route  path="/venta" element={<Venta/>} />
                     <Route  path="/alta" element={<Registro/>}/>
                     <Route  path="/ingresar" element={<Login/>}/>
                     <Route  path="/detalle/:detalleId" element={<DetalleProd />}/>

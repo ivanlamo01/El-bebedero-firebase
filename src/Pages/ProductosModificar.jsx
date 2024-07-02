@@ -39,6 +39,7 @@ function ProductosAlta() {
         setValue("price",response.data().price)
         setValue("thumbnail",response.data().thumbnail)
         setValue("description",response.data().description) 
+        setValue("category",response.data().category) 
         setLoading(false)
       } catch (e) {
         console.log(e);
@@ -94,6 +95,11 @@ function ProductosAlta() {
                     <span>This field is required</span>
                 </div>)}
             <Input label="Descripcion"   register={{...register("description", { required: true })}} />
+              {errors.email && (
+                <div>
+                    <span>This field is required</span>
+                </div>)}
+                <Input label="Categoria"   register={{...register("category", { required: true })}} />
               {errors.email && (
                 <div>
                     <span>This field is required</span>

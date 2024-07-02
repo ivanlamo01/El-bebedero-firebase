@@ -20,14 +20,14 @@ const style={
     },
     tabla:{
         width:"90%",
-        margin:"10%"
+        marginLeft:"10%"
     },
     itemtabla:{
         width:"15%"
     }
     }
 
-function Producto({id,title,price,thumbnail,description}) {
+function Producto({id,title,price,category,Barcode}) {
     const {login} = useAuthContext()
     return (
         
@@ -36,12 +36,14 @@ function Producto({id,title,price,thumbnail,description}) {
                     <table style={style.tabla}>
                         <tbody>
                             <tr>
-                                <th style={style.itemtabla} scope="row">{id}</th>
+                                <td style={style.itemtabla}>{Barcode}</td>
                                 <td style={style.itemtabla}>{title}</td>
                                 <td style={style.itemtabla}>{price}</td>
-                                <td style={style.itemtabla}>{description}</td>
+                                <td style={style.itemtabla}>{category}</td>
                                 <td style={style.itemtabla}>
-                                    <Button  className="boton" as={Link} to={`/detalle/${id}`} style={style.buttons}>Comprar</Button>
+                                    <Button  className="boton" as={Link} to={`/detalle/${id}`} style={style.buttons}>
+                                        Comprar
+                                    </Button>
                                 </td>
                                 <td style={style.itemtabla}>
                                     {login&&(

@@ -1,7 +1,7 @@
 import Productos from "../Components/Productos"
 import firebase from "../config/firebase";
 
-function Home() {
+function Inventario() {
     console.log(firebase);
     return (
         <>
@@ -10,4 +10,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Inventario;

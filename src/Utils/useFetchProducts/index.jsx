@@ -4,14 +4,11 @@ import { getAll} from "../../Services/productosServices";
 export const useFetchProducts = () => {
   const [loading, setLoading] = useState(true);
   const [productos, setProductos] = useState([]);
-  const [buscar, setBuscar] = useState("");
-  
 
   useEffect(() => {
     const request = async () => {
       try {
-        const response = await getAll(buscar);
-        console.log(response);
+        const response = await getAll();
         setProductos(response);
         setLoading(false);
       } catch (e) {
@@ -19,14 +16,12 @@ export const useFetchProducts = () => {
       }
     };
     request();
-  }, [buscar]);
+  }, []);
 
 
   return {
     productos,
     loading,
-    buscar,
-    setBuscar,
   };
 };
 

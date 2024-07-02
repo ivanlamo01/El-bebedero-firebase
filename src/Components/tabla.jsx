@@ -1,5 +1,7 @@
 import Producto from  "./Producto"
 import { useFetchProducts } from "../Utils/useFetchProducts";
+import Button from "react-bootstrap/Button";
+import { useState } from "react";
 
 const style={
     button:{
@@ -12,7 +14,7 @@ const style={
     },
     tabla:{
         width:"90%",
-        margin:"10%",
+        marginLeft:"10%",
 
     },
     tr:{
@@ -20,15 +22,17 @@ const style={
         flexDirection:"row",
         justifyContent:"space-evenly"
     },
-    itemtabla:{
-    
+    buscar:{
+        margin:"10px",
+        marginTop:"70px"
     }
 }
 
 function Tabla(){ 
     const {productos}=useFetchProducts()
+    const [buscar, setBuscar] = useState("");
+
     return(
-        
                     <div>
                         <table style={style.tabla}>
                             <thead>
@@ -36,7 +40,7 @@ function Tabla(){
                                     <th style={style.itemtabla} scope="col">ID</th>
                                     <th style={style.itemtabla} scope="col">Titulo</th>
                                     <th style={style.itemtabla} scope="col">Precio</th>
-                                    <th style={style.itemtabla} scope="col">Descripcion</th>
+                                    <th style={style.itemtabla} scope="col">Categoria</th>
                                     <th style={style.itemtabla} scope="col">Comprar</th>
                                     <th style={style.itemtabla} scope="col">Editar</th>
                                 </tr>
@@ -46,7 +50,6 @@ function Tabla(){
                     {productos.map((product) => (
                                     <Producto{...product.data()}
                                         key={product.id}
-                                        id={product.id}
                                     />)
                                     )}
                     </div>

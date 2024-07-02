@@ -33,8 +33,6 @@ function Main() {
                         Ahora en nuestra tienda
                     </h1>
                     <h3 style={{fontWeight:"700",fontFamily:"'Visby CF',sansSerif",}}>Uefa . Conmebol . MLS. Selecciones</h3>
-                
-                    
             </div>
             <div style={style.carousel}>
                 <ProductosCarousel />
