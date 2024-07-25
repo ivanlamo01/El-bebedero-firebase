@@ -1,13 +1,15 @@
-import back from "../Assets/img/background.png"
+import "../styles/main.css"
 import ProductosCarousel from "./productosCarousel"
 
 const style ={
     main:{
         width:"100%",
         height:"1080px",
-        backgroundColor:"#FFAE00",
         display:"flex",
-        justifyContent:"space-evenly" 
+        justifyContent:"space-evenly" ,
+        background: "#f7971e" ,
+        background: "-webkit-linear-gradient(to top, #f7971e, #ffd200)",
+        background: "linear-gradient(to top, #f7971e, #ffd200)" /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
     },
     carousel:{
         width:"500px",

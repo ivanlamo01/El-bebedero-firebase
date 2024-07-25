@@ -1,7 +1,7 @@
 //import axios
 //import instance from "../config/axios"
 import firebase from "../config/firebase"
-import { getFirestore, collection, query, where, getDocs, doc, updateDoc  } from "firebase/firestore"
+import { getFirestore, collection, query, where, getDocs, doc, updateDoc,addDoc  } from "firebase/firestore"
 
 const db = getFirestore();
 
@@ -134,4 +134,14 @@ export const getProductByTitle = async (title) => {
 export const updateProductStock = async (id, newStock) => {
     const productRef = doc(db, "Productos", id);
     await updateDoc(productRef, { stock: newStock });
+};
+
+
+export const addSale = async (sale) => {
+    try {
+        const docRef = await addDoc(collection(db, 'sales'), sale);
+        console.log('Venta agregada con ID: ', docRef.id);
+    } catch (e) {
+        console.error('Error agregando la venta: ', e);
+    }
 };
