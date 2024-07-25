@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/ivanlamo01/El-bebedero-firebase/static/css/main.12ad2519.css",
+    "main.js": "/ivanlamo01/El-bebedero-firebase/static/js/main.49c23b60.js",
+    "static/js/787.28cb0dcd.chunk.js": "/ivanlamo01/El-bebedero-firebase/static/js/787.28cb0dcd.chunk.js",
+    "static/media/Instagram_icon.png.webp": "/ivanlamo01/El-bebedero-firebase/static/media/Instagram_icon.png.e291349581f33a4f4b3e.webp",
+    "static/media/WhatsApp_icon.png.webp": "/ivanlamo01/El-bebedero-firebase/static/media/WhatsApp_icon.png.c7dacebb181e85b92e70.webp",
+    "static/media/3721984-removebg-preview.png": "/ivanlamo01/El-bebedero-firebase/static/media/3721984-removebg-preview.c6767d8de8b92e22174a.png",
+    "static/media/background.png": "/ivanlamo01/El-bebedero-firebase/static/media/background.8f13f77b441b00314e35.png",
+    "static/media/Gmail_icon_(2020).svg.webp": "/ivanlamo01/El-bebedero-firebase/static/media/Gmail_icon_(2020).svg.27f35c965a2996c3456e.webp",
+    "index.html": "/ivanlamo01/El-bebedero-firebase/index.html",
+    "main.12ad2519.css.map": "/ivanlamo01/El-bebedero-firebase/static/css/main.12ad2519.css.map",
+    "main.49c23b60.js.map": "/ivanlamo01/El-bebedero-firebase/static/js/main.49c23b60.js.map",
+    "787.28cb0dcd.chunk.js.map": "/ivanlamo01/El-bebedero-firebase/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.12ad2519.css",
+    "static/js/main.49c23b60.js"
+  ]
+}
