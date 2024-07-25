@@ -75,7 +75,7 @@ function ProductosAlta() {
                 <div>
                     <span>This field is required</span>
                 </div>)}
-                <Input label="Codigo de baras"   register={{...register("Barcode", { required: true })}} />
+                <Input label="Codigo de baras" type="number"   register={{...register("Barcode", { required: true })}} />
               {errors.email && (
                 <div>
                     <span>This field is required</span>

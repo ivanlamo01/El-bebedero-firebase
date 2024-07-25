@@ -10,16 +10,20 @@ import ProductosAlta from '../Pages/ProductosAlta';
 import ProductosModificar from '../Pages/ProductosModificar';
 import AuthProvider from '../Context/AuthContext';
 import Footer from "../Components/footer"
+import { CartProvider } from '../Context/CartContext';
+import Cart from '../Components/cart';
 
 function Public() {
     
     return (
     <AuthProvider>
+        <CartProvider>
     <div className="App">
             <NavBar />
                 <Routes>
                     <Route  path="/" element={<Home/>} />
                     <Route  path="/inventario" element={<Inventario/>} />
+                    <Route  path="/cart" element={<Cart/>} />
                     <Route  path="/alta" element={<Registro/>}/>
                     <Route  path="/ingresar" element={<Login/>}/>
                     <Route  path="/detalle/:detalleId" element={<DetalleProd />}/>
@@ -29,6 +33,7 @@ function Public() {
                 </Routes>
             <Footer/>
     </div>
+    </CartProvider>
     </AuthProvider>
     );
 }
