@@ -13,17 +13,6 @@ const style={
         fontSize:"20px",
         display:"flex",
     },
-    topbar:{
-        backgroundColor:"#f44c7f",
-        fontWeight:"700",
-        color:"#fafafa",
-        padding:"10px",
-        display:"flex",
-        justifyContent:"center",
-    },
-    grat:{
-        color:"#202d56"
-    },
 
 }
 
@@ -47,13 +36,10 @@ function NavBar(){
 
     return (
         <>  
-            <div style={style.topbar}>
-                <b style={style.grat}>ENVIOS GRATIS </b> <strong>  EN ORDENES DE MAS DE $5000</strong>
-            </div>
             <header style={style.header} >
 
             <Navbar  collapseOnSelect expand="lg"  variant="dark"  
-                    style={{backgroundColor: isScrolled? "#202d56":"#FFFFFF00",
+                    style={{backgroundColor: isScrolled? "#515151":"#FFFFFF00",
                             position:"fixed",
                             top: isScrolled? "0px":"auto",
                             transition:"all .5s",

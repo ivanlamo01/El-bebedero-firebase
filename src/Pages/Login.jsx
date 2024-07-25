@@ -7,7 +7,8 @@ import Alert from '../Components/Check';
 import { useState } from "react";
 import { useAuthContext } from "../Context/AuthContext";
 import { getByUserId } from "../Services/usuariosServices";
-import {Button, Spinner } from "react-bootstrap"
+import {Button, Spinner } from "react-bootstrap";
+
 
 const style={
     separador:{
@@ -31,6 +32,11 @@ const style={
         height:"70px",
         backgroundColor:"#202d56"
     },
+    buttonG:{
+        width:"100%",
+        height:"70px",
+        backgroundColor:"orange"
+    },    
     label:{
         color:"#454545",
     }
@@ -41,7 +47,7 @@ function Login() {
     const [alert,setAlert] = useState({variant:"",text:""})
     const[loading, setLoading] = useState(false)
     const {handleLogin} = useAuthContext()
-    
+
     const onSubmit = async (data) =>{
         setLoading(true)
         try {
@@ -87,19 +93,12 @@ function Login() {
                             {loading && <Spinner animation="border" size="sm"/>}
                             Iniciar
                         </Button>
-
                         {alert && <Alert {...alert} />}
                 </Form>
                 </Container>
             </div>
-
-
-    
-        
         </>
     );
 }
-
-
 
 export default Login;

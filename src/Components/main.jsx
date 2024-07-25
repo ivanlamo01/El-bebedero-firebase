@@ -5,7 +5,7 @@ const style ={
     main:{
         width:"100%",
         height:"1080px",
-        backgroundImage: `url(${back})`,
+        backgroundColor:"#FFAE00",
         display:"flex",
         justifyContent:"space-evenly" 
     },
@@ -27,14 +27,11 @@ function Main() {
         <div style={style.main}>
             <div style={style.text}>
                     <h1 style={{fontWeight:"700",fontFamily:"'Visby CF',sansSerif",}}>
-                    Las camisetas mas solicitadas
+                    EL BEBEDERO
                     </h1>
                     <h1 style={{fontWeight:"700"}}>
-                        Ahora en nuestra tienda
+                        Sistema Punto de Venta
                     </h1>
-                    <h3 style={{fontWeight:"700",fontFamily:"'Visby CF',sansSerif",}}>Uefa . Conmebol . MLS. Selecciones</h3>
-                
-                    
             </div>
             <div style={style.carousel}>
                 <ProductosCarousel />

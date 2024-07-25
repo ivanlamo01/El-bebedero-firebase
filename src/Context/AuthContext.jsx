@@ -18,13 +18,14 @@ const AuthProvider = ({ children }) => {
         localStorage.setItem("user", JSON.stringify(userInfo));
         }
     };
-    const handleLogout = () => {
-        localStorage.removeItem("login");
-        localStorage.removeItem("user");
-        setLogin(false);
-    };
 
-return (
+        const handleLogout = () => {
+            localStorage.removeItem("login");
+            localStorage.removeItem("user");
+            setLogin(false);
+        };
+
+    return (
     <AuthContext.Provider value={{ login, handleLogin, handleLogout, user }}>
         {children}
     </AuthContext.Provider>
