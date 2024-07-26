@@ -38,7 +38,7 @@ function Footer() {
                                     <img src={ubi}/>
                                     <label>La Plata, 
                                     Argentina                                    
-                                    Calle 126 y 43
+                                    Calle 126 y 73
                                     Casa # 493</label>
                                 </div>
                                 <div className="row2">
