@@ -1,5 +1,4 @@
 import Registro from '../Pages/Registro';
-import Venta from '../Pages/venta';
 import Inventario from '../Pages/Inventario';
 import Login from '../Pages/Login';
 import NavBar from '../Components/NavBar';
@@ -15,7 +14,7 @@ import { CartProvider } from '../Context/CartContext';
 import Cart from '../Components/cart';
 import DebtorsList from '../Pages/DebtorList';
 import SalesList from '../Pages/SalesList';
-
+import { Container } from 'react-bootstrap';
 function Public() {
     
     return (

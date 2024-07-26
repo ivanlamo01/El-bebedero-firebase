@@ -1,6 +1,8 @@
 .App{
     font-family: Visby CF,sans-serif;
     background-color: whitesmoke ;
+
+    
 }
 
 .button {
@@ -14,3 +16,4 @@
     background-color:#f44c7f ;
     transition: background-color 0.5s ;
 }
+

@@ -42,18 +42,23 @@ const SalesList = () => {
                         sales.map(sale => (
                             <tr key={sale.id}>
                                 <td>{sale.id}</td>
-                                <td>${sale.total.toFixed(2)}</td>
+                                <td>${parseFloat(sale.total).toFixed(2)}</td>
                                 <td>{sale.paymentMethod || 'Método de pago no disponible'}</td>
                                 <td>
                                     <details>
                                         <summary>Ver Detalles</summary>
                                         <ul>
                                             {sale.products && sale.products.length > 0 ? (
-                                                sale.products.map((product, index) => (
-                                                    <li key={index}>
-                                                        {product.title} - ${parseFloat(product.price).toFixed(2)}
-                                                    </li>
-                                                ))
+                                                sale.products.map((product, index) => {
+                                                    // Verificación y conversión de precio
+                                                    const price = parseFloat(product.price);
+                                                    const displayPrice = !isNaN(price) ? `$${price.toFixed(2)}` : 'Precio no disponible';
+                                                    return (
+                                                        <li key={index}>
+                                                            {product.title} - {displayPrice} x {product.quantity}
+                                                        </li>
+                                                    );
+                                                })
                                             ) : (
                                                 <li>No hay productos disponibles</li>
                                             )}

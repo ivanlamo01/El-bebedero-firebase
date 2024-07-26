@@ -24,3 +24,52 @@
 .sales-list details summary {
     font-weight: bold;
 }
+
+.sales-list {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.sales-list h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sales-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.sales-list th, .sales-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.sales-list th {
+    background-color: #f4f4f4;
+}
+
+.sales-list tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.sales-list tr:hover {
+    background-color: #f1f1f1;
+}
+
+details {
+    cursor: pointer;
+}
+
+details summary {
+    outline: none;
+    font-weight: bold;
+}
+
+details ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}

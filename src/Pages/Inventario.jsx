@@ -16,7 +16,7 @@ const style={
     }
 }
 
-function Home() {
+function Inventario() {
     return (
         <>
             <div style={style.separador}>

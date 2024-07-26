@@ -7,12 +7,9 @@ import Container from 'react-bootstrap/Container';
 
 const style={
     header:{
-        width:"100%",
         fontWeight: "700",
         fontSize:"20px",
-        display:"flex",
     },
-
 }
 
 function NavBar(){
@@ -26,22 +23,19 @@ function NavBar(){
             <header style={style.header} >
 
             <Navbar  collapseOnSelect expand="lg"  variant="dark"  
-                    style={{backgroundColor: isScrolled? "#202d56":"#FFFFFF00",
+                    style={{backgroundColor:  "#515151",
                             position:"fixed",
-                            top: "0px",
-                            display:"flex",
                             width:"100%",
                             zIndex:"99",
                             }}>
-                
                 <Container>
-                    <Navbar.Brand as={Link} to="/" style={style.text}>Camisetas La Plata</Navbar.Brand>
+                    <Navbar.Brand as={Link} to="/" style={style.text}>El Bebedero</Navbar.Brand>
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav className="me-auto" >
                         <Nav.Link as={Link} to="/" >Home</Nav.Link>
                         <Nav.Link as={Link} to="/inventario" >Inventario</Nav.Link>
-                        <Nav.Link as={Link} to="/venta" >Iniciar Venta</Nav.Link>
+                        <Nav.Link as={Link} to="/cart" >Iniciar Venta</Nav.Link>
                             {login &&(
                                 <>
                                     <Nav.Link as={Link} to="/productos/ProductosAlta">Agregar Producto</Nav.Link>
