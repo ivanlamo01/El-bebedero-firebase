@@ -1,0 +1,26 @@
+.sales-list {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.sales-list table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sales-list th, .sales-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.sales-list th {
+    background-color: #f4f4f4;
+}
+
+.sales-list details {
+    cursor: pointer;
+}
+
+.sales-list details summary {
+    font-weight: bold;
+}

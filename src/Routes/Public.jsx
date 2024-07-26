@@ -12,6 +12,8 @@ import AuthProvider from '../Context/AuthContext';
 import Footer from "../Components/footer"
 import { CartProvider } from '../Context/CartContext';
 import Cart from '../Components/cart';
+import DebtorsList from '../Pages/DebtorList';
+import SalesList from '../Pages/SalesList';
 
 function Public() {
     
@@ -24,6 +26,8 @@ function Public() {
                     <Route  path="/" element={<Home/>} />
                     <Route  path="/inventario" element={<Inventario/>} />
                     <Route  path="/cart" element={<Cart/>} />
+                    <Route  path="/sales" element={<SalesList/>} />
+                    <Route path="/debtors" element={<DebtorsList/>} />
                     <Route  path="/alta" element={<Registro/>}/>
                     <Route  path="/ingresar" element={<Login/>}/>
                     <Route  path="/detalle/:detalleId" element={<DetalleProd />}/>

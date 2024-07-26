@@ -60,9 +60,19 @@ function NavBar(){
                                     <Nav.Link as={Link} to="/productos/ProductosAlta">Agregar Producto</Nav.Link>
                                 </>
                             )}  
-                              {login &&(
+                                {login &&(
                                 <>
                                     <Nav.Link as={Link} to="/cart">Iniciar Compra</Nav.Link>
+                                </>
+                            )} 
+                            {login &&(
+                                <>
+                                    <Nav.Link as={Link} to="/debtors"> Deudores</Nav.Link>
+                                </>
+                            )} 
+                            {login &&(
+                                <>
+                                    <Nav.Link as={Link} to="/sales"> Ventas</Nav.Link>
                                 </>
                             )} 
                         </Nav>
