@@ -1,11 +1,12 @@
-import  Button from "react-bootstrap/Button"
+
 import  Form from "react-bootstrap/Form"
 import { useForm } from "react-hook-form"
 import Input from "../Components/Input";
 import Container from "react-bootstrap/Container";
 import { create } from "../Services/productosServices";
-import { useNavigate } from "react-router-dom";
-
+import ButtonWhitLoading from "../Components/buttonWhitLoading"
+import { useState } from "react";
+import Check from '../Components/Check';
 const style={
   separador:{
       height:"500px",
@@ -33,17 +34,22 @@ button:{
 function ProductosAlta() {
   
   const { register, handleSubmit, formState: { errors } } = useForm({mode:"onChange"});
-  const navigate= useNavigate();
-  
+  const [alert,setAlert] = useState({variant:"",text:""})
+  const[loading, setLoading] = useState(false)
   const onSubmit = async (data) =>{
     console.log(data);
+    setLoading(true)
     try {
       const document = await create(data);
           if (document){
-            navigate("/")
+            setAlert({variant:"success", text: "¡Exitoso!",duration: 1500});
+            setLoading(false)
+            window.location.reload(false)
         }  
     } catch (e) {
         console.log(e);
+        setAlert({variant:"danger", text: "Error"});
+        setLoading(false);
     }
   };
 
@@ -64,13 +70,26 @@ function ProductosAlta() {
                 <div>
                     <span>This field is required</span>
                 </div>)}
-            <Input label="Descripcion"   register={{...register("description", { required: true })}} />
+            <Input label="Categoria"   register={{...register("category", { required: true })}} />
+              {errors.email && (
+                <div>
+                    <span>This field is required</span>
+                </div>)}
+                <Input label="Codigo de baras" type="number"   register={{...register("Barcode", { required: true })}} />
+              {errors.email && (
+                <div>
+                    <span>This field is required</span>
+                </div>)}
+                <Input label="Stock"   register={{...register("stock", { required: true })}} />
               {errors.email && (
                 <div>
                     <span>This field is required</span>
                 </div>)}
 
-              <Button variant="primary" type="submit" style={style.button}>Guardar</Button>
+          <ButtonWhitLoading variant="primary" type="submit" loading={loading} style={style.button}>
+            Guardar
+          </ButtonWhitLoading>
+          {alert && <Check {...alert} />}
         </Form>
         </Container>
     </div>

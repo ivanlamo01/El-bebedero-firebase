@@ -12,9 +12,7 @@ const style={
         fontSize:"20px",
         display:"flex",
     },
-    grat:{
-        color:"#202d56"
-    },
+
 }
 
 function NavBar(){
@@ -28,7 +26,7 @@ function NavBar(){
             <header style={style.header} >
 
             <Navbar  collapseOnSelect expand="lg"  variant="dark"  
-                    style={{backgroundColor: "#202d56",
+                    style={{backgroundColor: isScrolled? "#202d56":"#FFFFFF00",
                             position:"fixed",
                             top: "0px",
                             display:"flex",
@@ -49,6 +47,21 @@ function NavBar(){
                                     <Nav.Link as={Link} to="/productos/ProductosAlta">Agregar Producto</Nav.Link>
                                 </>
                             )}  
+                                {login &&(
+                                <>
+                                    <Nav.Link as={Link} to="/cart">Iniciar Compra</Nav.Link>
+                                </>
+                            )} 
+                            {login &&(
+                                <>
+                                    <Nav.Link as={Link} to="/debtors"> Deudores</Nav.Link>
+                                </>
+                            )} 
+                            {login &&(
+                                <>
+                                    <Nav.Link as={Link} to="/sales"> Ventas</Nav.Link>
+                                </>
+                            )} 
                         </Nav>
                         <Nav>                    
                             {!login &&(

@@ -19,33 +19,61 @@ const style={
         display:"flex",
     },
     tabla:{
-        width:"90%",
-        marginLeft:"10%"
+        textAlign:"center",
+        width:"95%",
+        marginLeft:"2.5%",
     },
-    itemtabla:{
-        width:"15%"
-    }
-    }
+    itemtabla1:{
+        width:"20%",
+        padding:"10px",
+        borderCollapse: "collapse",
+        border: "black 1px solid"
+    },
+    itemtabla2:{
+        width:"20%",
+        borderCollapse: "collapse",
+        border: "black 1px solid"
+    },
+    itemtabla3:{
+        width:"15%",
+        borderCollapse: "collapse",
+        border: "black 1px solid"
+    },
+    itemtabla4:{
+        width:"15%",
+        borderCollapse: "collapse",
+        border: "black 1px solid"
+    },
+    itemtabla5:{
+        width:"12.5%",
+        borderCollapse: "collapse",
+        border: "black 1px solid"
+    },
+    itemtabla6:{
+        width:"12.5%",
+        borderCollapse: "collapse",
+        border: "black 1px solid"
+    },
+    deshabilitado: {
+        color: "gray",
+        textDecoration: "line-through",
+    },
+}
 
-function Producto({id,title,price,category,Barcode}) {
+
+function Producto({id,title,price,Barcode,category,stock}) {
     const {login} = useAuthContext()
     return (
         
         <> 
-                    <div>
-                    <table style={style.tabla}>
-                        <tbody>
-                            <tr>
-                                <td style={style.itemtabla}>{Barcode}</td>
-                                <td style={style.itemtabla}>{title}</td>
-                                <td style={style.itemtabla}>{price}</td>
-                                <td style={style.itemtabla}>{category}</td>
-                                <td style={style.itemtabla}>
-                                    <Button  className="boton" as={Link} to={`/detalle/${id}`} style={style.buttons}>
-                                        Comprar
-                                    </Button>
-                                </td>
-                                <td style={style.itemtabla}>
+                            <tr style={stock <= 0 ? style.deshabilitado : {}}>
+                                
+                                <td style={style.itemtabla1}>{Barcode}</td>
+                                <td style={style.itemtabla2}>{title}</td>
+                                <td style={style.itemtabla3}>{price}</td>
+                                <td style={style.itemtabla4}>{category}</td>
+                                <td style={style.itemtabla5}>{stock}</td>
+                                <td style={style.itemtabla6}>
                                     {login&&(
                                     <>
                                         <Button  className="boton" as={Link} to={`/detalle/editar/${id}`} style={style.buttons}>Editar</Button>
@@ -53,9 +81,6 @@ function Producto({id,title,price,category,Barcode}) {
                                     )}
                                 </td>
                             </tr>
-                        </tbody>
-                        </table>
-                    </div>
                     
             
         </>

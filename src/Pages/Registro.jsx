@@ -32,8 +32,6 @@ const style={
   },
 }
 
-
-
 function Registro() {
   
   const { register, handleSubmit, formState: { errors } } = useForm({mode:"onChange"});
