@@ -90,23 +90,26 @@ function Cart() {
 
             const sale = {
                 total: total,
-                products: cart,
-                paymentMethod: paymentMethod
-            };
-            await addSale(sale);
-
-            if (paymentMethod === 'Deuda') {
-                const products = cart.map(item => ({
-                    name: item.data.title,
+                products: cart.map(item => ({
+                    title: item.data.title,
                     price: item.data.price,
                     quantity: item.quantity
-                }));
+                })),
+                paymentMethod: paymentMethod,
+                timestamp: new Date()
+            };
+            await addDoc(collection(db, "sales"), sale);
 
+            if (paymentMethod === 'Deuda') {
                 const debt = {
                     name: debtorName,
                     amount: total,
                     timestamp: new Date(),
-                    products: products
+                    products: cart.map(item => ({
+                        name: item.data.title,
+                        price: item.data.price,
+                        quantity: item.quantity
+                    }))
                 };
                 await addDoc(collection(db, "debts"), debt);
             }
@@ -144,7 +147,9 @@ function Cart() {
                             placeholder="Buscar por código de barras" 
                             className="cart-input"
                         />
-                        <button type="submit" className="cart-button">Agregar por código de barras</button>
+                        <button type="submit" className="cart-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            </button>
                     </form>
                     <form onSubmit={handleSearchByTitle} className="cart-form">
                         <input 
@@ -154,7 +159,9 @@ function Cart() {
                             placeholder="Buscar por título" 
                             className="cart-input"
                         />
-                        <button type="submit" className="cart-button">Agregar por título</button>
+                        <button type="submit" className="cart-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
                     </form>
                     <button onClick={clearCart} className="cart-button clear-button">Vaciar Carrito</button>
                     {cart.length === 0 ? (
@@ -187,7 +194,9 @@ function Cart() {
                                                 />
                                             </td>
                                             <td>
-                                                <button onClick={() => removeFromCart(item.id)} className="cart-button">Eliminar</button>
+                                                <button onClick={() => removeFromCart(item.id)} className="cart-button-del">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                                </button>
                                             </td>
                                         </tr>
                                     ))}
@@ -197,10 +206,12 @@ function Cart() {
                     )}
                 </div>
                 <div className="right-side">
-                    <h3>Total: ${total.toFixed(2)}</h3>
+                    <div className="total">
+                    <h3 className="titulo">Total de la compra</h3>
+                    <h4>Total: ${total.toFixed(2)}</h4>
                     <button 
                         onClick={handlePurchaseConfirmation} 
-                        className="cart-button confirm-button"
+                        className="cart-button"
                         disabled={cart.length === 0}
                     >
                         Confirmar Compra
@@ -208,6 +219,8 @@ function Cart() {
                     {cart.length === 0 && (
                         <p>No puedes confirmar la compra porque el carrito está vacío.</p>
                     )}
+                    </div>
+
                 </div>
             </div>
             {showModal && (

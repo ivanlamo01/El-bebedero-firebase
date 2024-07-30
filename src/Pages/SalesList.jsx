@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, deleteDoc, doc, getDocs, getFirestore } from 'firebase/firestore';
 import '../styles/salesList.css';
 
 const db = getFirestore();
@@ -21,6 +21,16 @@ const SalesList = () => {
         fetchSales();
     }, []);
 
+    const handleDelete = async (id) => {
+        try {
+            await deleteDoc(doc(db, 'sales', id));
+            const updatedSales = sales.filter(sale => sale.id !== id);
+            setSales(updatedSales);
+        } catch (error) {
+            console.error("Error al eliminar la venta: ", error);
+        }
+    };
+
     return (
         <div className="sales-list">
             <h1>Lista de Ventas</h1>
@@ -31,12 +41,13 @@ const SalesList = () => {
                         <th>Total</th>
                         <th>Método de Pago</th>
                         <th>Detalles</th>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {sales.length === 0 ? (
                         <tr>
-                            <td colSpan="4">No hay ventas disponibles</td>
+                            <td colSpan="5">No hay ventas disponibles</td>
                         </tr>
                     ) : (
                         sales.map(sale => (
@@ -48,22 +59,25 @@ const SalesList = () => {
                                     <details>
                                         <summary>Ver Detalles</summary>
                                         <ul>
-                                            {sale.products && sale.products.length > 0 ? (
-                                                sale.products.map((product, index) => {
-                                                    // Verificación y conversión de precio
-                                                    const price = parseFloat(product.price);
-                                                    const displayPrice = !isNaN(price) ? `$${price.toFixed(2)}` : 'Precio no disponible';
-                                                    return (
-                                                        <li key={index}>
-                                                            {product.title} - {displayPrice} x {product.quantity}
-                                                        </li>
-                                                    );
-                                                })
-                                            ) : (
-                                                <li>No hay productos disponibles</li>
-                                            )}
+                                            <li>Fecha y Hora: {sale.timestamp ? new Date(sale.timestamp.seconds * 1000).toLocaleString() : 'Fecha no disponible'}</li>
+                                            <li>Productos:
+                                                <ul>
+                                                    {sale.products && sale.products.length > 0 ? (
+                                                        sale.products.map((product, index) => (
+                                                            <li key={index}>
+                                                                {product.title} - ${parseFloat(product.price).toFixed(2)} x {product.quantity}
+                                                            </li>
+                                                        ))
+                                                    ) : (
+                                                        <li>No hay productos disponibles</li>
+                                                    )}
+                                                </ul>
+                                            </li>
                                         </ul>
                                     </details>
+                                </td>
+                                <td>
+                                    <button onClick={() => handleDelete(sale.id)} className="delete-button">Eliminar</button>
                                 </td>
                             </tr>
                         ))
