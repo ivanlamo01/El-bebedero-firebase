@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { useAuthContext } from '../Context/AuthContext';
 import Container from 'react-bootstrap/Container';
 import "../styles/nav.css"
@@ -115,7 +114,10 @@ const NavBar = () => {
                                         </>
                                     )}
                                     {login && <div>
-                                            <Nav.Link onClick={() => handleLogout()} >Salir</Nav.Link>
+                                            <Nav.Link onClick={() => handleLogout()} >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="18" y1="8" x2="23" y2="13"></line><line x1="23" y1="8" x2="18" y2="13"></line></svg>
+                                            <span style={hovered ? {padding:"10px"} : { display: 'none' }}>Salir</span>
+                                            </Nav.Link>
                                         
                                     </div>}
                                 
