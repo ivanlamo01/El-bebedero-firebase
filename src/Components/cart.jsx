@@ -132,7 +132,7 @@ function Cart() {
     return (
         <>
             <div className="separador">
-                <h1>Carrito de Compras</h1>
+                
             </div>
             <div className="cart-container">
                 <div className="left-side">

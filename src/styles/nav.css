@@ -1,48 +1,8 @@
-.navbar {
-  width: 100px;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: #515151;
-  transition: width 0.5s;
-  z-index: 99;
-  overflow-x: hidden;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.navbar.expanded {
-  width: 250px;
-}
-
-.navbar-brand,
-.nav-item {
-  display: flex;
-  align-items: center;
-  padding: 10px 20px;
-  transition: all 0.3s ease;
-}
-
-.nav-item {
-  display: flex;
-  justify-content: start;
-}
 
 .nav-icon {
   margin-right: 10px;
 }
 
 .nav-text {
-  display: none;
-}
-
-.navbar.expanded .nav-text {
   display: inline;
-}
-
-.container{
-  margin-left: 80px;
-  height: 600px;
 }
