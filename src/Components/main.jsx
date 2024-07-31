@@ -4,7 +4,7 @@ import ProductosCarousel from "./productosCarousel"
 const style ={
     main:{
         width:"100%",
-        height:"1080px",
+        height:"100%",
         display:"flex",
         justifyContent:"space-evenly" ,
         background: "#f7971e" ,
@@ -13,7 +13,8 @@ const style ={
     },
     carousel:{
         width:"500px",
-        marginTop:"200px",
+        marginTop:"5%",
+        marginBottom:"5%",
     },
     text:{
         color:"white",

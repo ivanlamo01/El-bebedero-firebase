@@ -16,7 +16,7 @@ const style={
     }
 }
 
-function Home() {
+function Inventario() {
     return (
         <>
             <div style={style.separador}>
@@ -27,4 +27,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default Inventario;

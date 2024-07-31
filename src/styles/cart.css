@@ -1,15 +1,15 @@
 .cart-container {
-    padding: 20px;
     display: flex;
     justify-content: space-between;
     height: 40rem;
-    width: 60%;
+    width: 70%;
     margin-left: 20%;
     margin-bottom: 10%;
     margin-top: 5%;
     background-color: white;
     border-radius: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombreado */
+
 }
 
 .left-side, .right-side {
@@ -18,8 +18,26 @@
     flex-direction: column;
 }
 
+.left-side{
+    padding: 20px;
+}
+.right-side{
+    background-color:#f9d423 ;
+    border-radius: 20px;
+}
+.total{
+    background-color: #fce448 ;
+    border-radius: 20px;
+    padding: 10px;
+    width: 90%;
+    margin: 5%;
+}
+.titulo{
+    font-weight: 700;
+}
+
 .left-side {
-    margin-right: 20px;
+    margin-right: 10px;
 }
 
 .cart-form {
@@ -31,17 +49,47 @@
     padding: 5px;
     margin-right: 10px;
     width: calc(100% - 120px);
+    border-radius: 5px;
 }
 
 .cart-button {
     padding: 5px 10px;
-    background-color: #007bff;
+    background-color: #4de1c1;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
+.cart-button-confirm {
+    padding: 5px 10px;
+    background-color: #4de1c1;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+}
+
+.cart-button-del {
+    padding: 5px 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.boton-vaciar{
+    padding: 5px 10px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 50%;
+    margin-left: 20%;
+}
 .cart-button:hover {
     background-color: #0056b3;
 }
@@ -98,11 +146,9 @@
 }
 
 .separador {
-    display: flex;
-    height: 400px;
-    justify-content: center;
-    align-items: center;
-    background-color: #FFAE00;
+    height: 30px;
+    background-color: whitesmoke ;
+    
 }
 
 .separador h1 {
