@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { collection, deleteDoc, doc, getDocs, getFirestore } from 'firebase/firestore';
 import '../styles/salesList.css';
-
+import SalesChart from "../Components/saleschart"
 const db = getFirestore();
 
 const SalesList = () => {
@@ -84,6 +84,7 @@ const SalesList = () => {
                     )}
                 </tbody>
             </table>
+            <SalesChart/>
         </div>
     );
 };

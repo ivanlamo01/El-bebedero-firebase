@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from "react";
 import React from 'react';
 import '../styles/cart.css';
 import { addDoc, collection, getFirestore } from 'firebase/firestore';
+import Check from "./Check";
+import { Spinner } from "react-bootstrap";
 
 const db = getFirestore();
 
@@ -15,6 +17,8 @@ function Cart() {
     const [showModal, setShowModal] = useState(false);
     const [paymentMethod, setPaymentMethod] = useState('');
     const [debtorName, setDebtorName] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [alert, setAlert] = useState({ variant: "", text: "" });
 
     const handleSearchByBarcode = async (event) => {
         event.preventDefault();
@@ -56,7 +60,7 @@ function Cart() {
         }
     };
 
-    const handleQuantityChange = async (id, newQuantity) => {
+    const handleQuantityChange = (id, newQuantity) => {
         updateCartQuantity(id, newQuantity);
     };
 
@@ -64,13 +68,20 @@ function Cart() {
         setShowModal(true);
     };
 
+    const showAlert = (variant, text) => {
+        setAlert({ variant, text });
+        setTimeout(() => {
+            setAlert({ variant: "", text: "" });
+        }, 3000); // La alerta desaparecerá después de 3 segundos
+    };
+
     const confirmPurchase = async () => {
         if (paymentMethod === 'Deuda' && !debtorName) {
-            alert('Por favor, ingrese el nombre del deudor.');
+            showAlert('danger', 'Por favor, ingrese el nombre del deudor.');
             return;
         }
-
-        try {
+        try { 
+            setLoading(true);
             for (const item of cart) {
                 if (item && item.data && item.data.Barcode) {
                     const product = await getProductByBarcode(item.data.Barcode);
@@ -79,7 +90,8 @@ function Cart() {
                         if (newStock >= 0) {
                             await updateProductStock(product.id, newStock);
                         } else {
-                            alert(`No hay suficiente stock para ${product.data.title}`);
+                            showAlert('danger', `No hay suficiente stock para ${product.data.title}`);
+                            setLoading(false);
                             return;
                         }
                     }
@@ -115,10 +127,12 @@ function Cart() {
             }
 
             clearCart();
-            alert('Compra confirmada y stock actualizado');
+            showAlert('success', 'Compra confirmada y stock actualizado');
         } catch (error) {
             console.error('Error al confirmar la compra:', error);
+            showAlert('danger', 'Error al confirmar la compra. Por favor, inténtelo de nuevo.');
         } finally {
+            setLoading(false);
             setShowModal(false);
         }
     };
@@ -134,9 +148,7 @@ function Cart() {
 
     return (
         <>
-            <div className="separador">
-                
-            </div>
+            <div className="separador"></div>
             <div className="cart-container">
                 <div className="left-side">
                     <form onSubmit={handleSearchByBarcode} className="cart-form">
@@ -148,8 +160,8 @@ function Cart() {
                             className="cart-input"
                         />
                         <button type="submit" className="cart-button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                            </button>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
                     </form>
                     <form onSubmit={handleSearchByTitle} className="cart-form">
                         <input 
@@ -160,10 +172,10 @@ function Cart() {
                             className="cart-input"
                         />
                         <button type="submit" className="cart-button">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                         </button>
                     </form>
-                    <button onClick={clearCart} className="cart-button clear-button">Vaciar Carrito</button>
+                    <button onClick={clearCart} className="boton-vaciar">Vaciar Carrito</button>
                     {cart.length === 0 ? (
                         <p>El carrito está vacío</p>
                     ) : (
@@ -195,7 +207,7 @@ function Cart() {
                                             </td>
                                             <td>
                                                 <button onClick={() => removeFromCart(item.id)} className="cart-button-del">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                                 </button>
                                             </td>
                                         </tr>
@@ -207,20 +219,20 @@ function Cart() {
                 </div>
                 <div className="right-side">
                     <div className="total">
-                    <h3 className="titulo">Total de la compra</h3>
-                    <h4>Total: ${total.toFixed(2)}</h4>
-                    <button 
-                        onClick={handlePurchaseConfirmation} 
-                        className="cart-button"
-                        disabled={cart.length === 0}
-                    >
-                        Confirmar Compra
-                    </button>
-                    {cart.length === 0 && (
-                        <p>No puedes confirmar la compra porque el carrito está vacío.</p>
-                    )}
+                        <h3 className="titulo">Total de la compra</h3>
+                        <h5>Total: ${total.toFixed(2)}</h5>
+                        <button 
+                            onClick={handlePurchaseConfirmation} 
+                            className="cart-button-confirm"
+                            disabled={cart.length === 0}
+                        >
+                            Confirmar Compra
+                        </button>
+                        {cart.length === 0 && (
+                            <p>No puedes confirmar la compra porque el carrito está vacío.</p>
+                        )}
+                        {alert.text && <div className={`alert alert-${alert.variant}`}>{alert.text}</div>}
                     </div>
-
                 </div>
             </div>
             {showModal && (
@@ -246,7 +258,10 @@ function Cart() {
                                 {!debtorName && <p style={{ color: 'red' }}>El nombre del deudor es obligatorio.</p>}
                             </>
                         )}
-                        <button onClick={confirmPurchase} className="cart-button confirm-button">Confirmar</button>
+                        <button onClick={confirmPurchase} className="cart-button confirm-button">
+                            {loading && <Spinner animation="border" size="sm"/>}
+                            Confirmar
+                        </button>
                         <button onClick={() => setShowModal(false)} className="cart-button clear-button">Cancelar</button>
                     </div>
                 </div>
