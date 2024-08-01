@@ -56,6 +56,7 @@ const DebtorsList = () => {
         }
     };
 
+
     const handleDelete = async (debtorName, debtId = null) => {
         try {
             if (debtId) {
@@ -92,6 +93,7 @@ const DebtorsList = () => {
     return (
         <>
             <div className="separador">
+                DEUDAS
             </div>
             <div className="debtors-list">
                 <table>

@@ -145,17 +145,12 @@
     background-color: #218838;
 }
 
-.separador {
+.nose {
     height: 30px;
     background-color: whitesmoke ;
     
 }
 
-.separador h1 {
-    font-size: 60px;
-    font-weight: 600;
-    color: white;
-}
 .modal {
     position: fixed;
     top: 0;

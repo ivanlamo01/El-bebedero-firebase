@@ -13,7 +13,7 @@ import Loading from "../Components/Loading/Loading";
 const style={
   separador:{
       height:"500px",
-      backgroundColor:"#027fbb",
+      backgroundColor:"#FFAE00",
       display:"flex",
       justifyContent:"center"
   },
@@ -22,7 +22,17 @@ const style={
     marginTop:"200px",
     fontSize:"60px",
     fontWeight:"900"
-},}
+},
+container:{
+  maxWidth:"370px",
+  marginTop:"50px",
+  marginBottom:"50px",
+  borderRadius:"30px",
+  backgroundColor:"white",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+  padding:"20px"
+},
+}
 
 
 function ProductosAlta() {
@@ -77,7 +87,7 @@ function ProductosAlta() {
     </div>
     <Loading loading={loading} >
       <div>
-      <Container>
+      <Container style={style.container}>
       <Form onSubmit={handleSubmit(onSubmit)}>
       <Input label="Precio" register={{...register("price", { required: true })}}/>
                 {errors.nombre && (

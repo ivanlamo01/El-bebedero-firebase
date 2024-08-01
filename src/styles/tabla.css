@@ -1,0 +1,43 @@
+
+.buscar {
+    margin: 10px;
+}
+
+.tabla {
+    table-layout: fixed;
+    width: 95%;
+    margin-left: 2.5%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+.itemtabla1 {
+    width: 20%;
+    padding: 10px;
+}
+
+.itemtabla2 {
+    width: 20%;
+}
+
+.itemtabla3 {
+    width: 15%;
+}
+
+.itemtabla5 {
+    width: 12.5%;
+}
+
+.tbody {
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.clearButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 5px;
+}

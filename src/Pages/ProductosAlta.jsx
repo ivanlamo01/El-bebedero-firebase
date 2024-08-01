@@ -4,13 +4,15 @@ import { useForm } from "react-hook-form"
 import Input from "../Components/Input";
 import Container from "react-bootstrap/Container";
 import { create } from "../Services/productosServices";
-import ButtonWhitLoading from "../Components/buttonWhitLoading"
 import { useState } from "react";
 import Check from '../Components/Check';
+import { Spinner } from "react-bootstrap";
+import "../styles/prodAlta.css"
+
 const style={
   separador:{
       height:"500px",
-      backgroundColor:"#027fbb",
+      backgroundColor:"#FFAE00",
       display:"flex",
       justifyContent:"center"
   },
@@ -23,13 +25,13 @@ const style={
   container:{
     maxWidth:"370px",
     marginTop:"50px",
-    marginBottom:"50px"
+    marginBottom:"50px",
+    borderRadius:"30px",
+    backgroundColor:"white",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+    padding:"20px"
 },
-button:{
-  width:"100%",
-  height:"70px",
-  backgroundColor:"#202d56"
-},
+
 }
 function ProductosAlta() {
   
@@ -86,9 +88,10 @@ function ProductosAlta() {
                     <span>This field is required</span>
                 </div>)}
 
-          <ButtonWhitLoading variant="primary" type="submit" loading={loading} style={style.button}>
+          <button type="submit" loading={loading} className="boton">
+          {loading && <Spinner animation="border" size="sm"/>}
             Guardar
-          </ButtonWhitLoading>
+          </button>
           {alert && <Check {...alert} />}
         </Form>
         </Container>

@@ -11,7 +11,7 @@ import ButtonWhitLoading from "../Components/buttonWhitLoading"
 const style={
   separador:{
       height:"500px",
-      backgroundColor:"#027fbb",
+      backgroundColor:"#FFAE00",
       display:"flex",
       justifyContent:"center"
   },

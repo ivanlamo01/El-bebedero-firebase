@@ -14,7 +14,8 @@ import { CartProvider } from '../Context/CartContext';
 import Cart from '../Components/cart';
 import DebtorsList from '../Pages/DebtorList';
 import SalesList from '../Pages/SalesList';
-import { Container } from 'react-bootstrap';
+
+
 function Public() {
     
     return (
@@ -34,7 +35,7 @@ function Public() {
                     <Route  path="/detalle/:detalleId" element={<DetalleProd />}/>
                     <Route  path="/detalle/editar/:detalleId" element={<ProductosModificar />}/>
                     <Route  path="/compra" element={<PagDeCompra/>}/>
-                    <Route  path="/productos/ProductosAlta" element={<ProductosAlta />}/>
+                    <Route  path="/inventario/ProductosAlta" element={<ProductosAlta />}/>
                 </Routes>
             </div>
 

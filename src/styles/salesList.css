@@ -73,3 +73,13 @@ details ul {
     padding: 0;
     list-style-type: none;
 }
+.separado{
+    height:500px;
+    background-color:#FFAE00;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    color:white;
+    font-size:60px;
+    font-weight:900
+}

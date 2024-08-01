@@ -27,7 +27,7 @@
 
 
 .edit-button {
-    background-color: #4CAF50;
+    background-color: #4de1c1;
     color: white;
     border: none;
     padding: 5px 10px;
@@ -79,4 +79,14 @@
 
 .cancel-button {
     background-color: #f44336;
+}
+.separador{
+    height:500px;
+    background-color:#FFAE00;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    color:white;
+    font-size:60px;
+    font-weight:900
 }
