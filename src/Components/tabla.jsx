@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getAll } from "../Services/productosServices";
 import Producto from "./Producto";
 import Loading from "./Loading/Loading";
-import "../styles/tabla.css"
+import "../styles/tabla.css";
 
 function Tabla() {
   const [buscar, setBuscar] = useState("");
@@ -10,7 +10,7 @@ function Tabla() {
   const [barcode, setBarcode] = useState("");
   const [loading, setLoading] = useState(true);
   const [productos, setProductos] = useState([]);
-  const [filtro, setFiltro] = useState("titulo"); // Estado para manejar el filtro seleccionado
+  const [filtro, setFiltro] = useState("titulo");
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -112,17 +112,17 @@ function Tabla() {
       <table className="tabla">
         <thead className="tr">
           <tr>
-            <th className="itemtabla1"scope="col">
+            <th className="itemtabla1" scope="col">
               Barcode
             </th>
             <th className="itemtabla2" scope="col">
-              Titulo
+              Título
             </th>
             <th className="itemtabla3" scope="col">
               Precio
             </th>
             <th className="itemtabla3" scope="col">
-              Categoria
+              Categoría
             </th>
             <th className="itemtabla5" scope="col">
               Stock
@@ -142,7 +142,7 @@ function Tabla() {
               price={product.data.price}
               category={product.data.category}
               Barcode={product.data.Barcode}
-              // Condición para deshabilitar el producto si el stock es 0
+              variablePrice={product.data.variablePrice}
               disabled={product.data.stock === 0}
             />
           ))}
