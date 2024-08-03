@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  getDocs,
-  getFirestore,
-} from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, getFirestore } from "firebase/firestore";
 import "../styles/salesList.css";
 import SalesChart from "../Components/saleschart";
+
 const db = getFirestore();
 
 const SalesList = () => {
@@ -66,10 +61,8 @@ const SalesList = () => {
               sales.map((sale) => (
                 <tr key={sale.id}>
                   <td>{sale.id}</td>
-                  <td>${parseFloat(sale.total).toFixed(2)}</td>
-                  <td>
-                    {sale.paymentMethod || "Método de pago no disponible"}
-                  </td>
+                  <td>${Number(sale.total).toFixed(2)}</td>
+                  <td>{sale.paymentMethod || "Método de pago no disponible"}</td>
                   <td>
                     <details>
                       <summary>Ver Detalles</summary>
@@ -77,9 +70,7 @@ const SalesList = () => {
                         <li>
                           Fecha y Hora:{" "}
                           {sale.timestamp
-                            ? new Date(
-                                sale.timestamp.seconds * 1000
-                              ).toLocaleString()
+                            ? new Date(sale.timestamp.seconds * 1000).toLocaleString()
                             : "Fecha no disponible"}
                         </li>
                         <li>
@@ -88,9 +79,8 @@ const SalesList = () => {
                             {sale.products && sale.products.length > 0 ? (
                               sale.products.map((product, index) => (
                                 <li key={index}>
-                                  {product.title} - $
-                                  {parseFloat(product.price).toFixed(2)} x{" "}
-                                  {product.quantity}
+                                  {product.title} - ${Number(product.price).toFixed(2)} x {product.quantity}
+                                  {product.description && <p>Descripción: {product.description}</p>}
                                 </li>
                               ))
                             ) : (
@@ -102,10 +92,7 @@ const SalesList = () => {
                     </details>
                   </td>
                   <td>
-                    <button
-                      onClick={() => handleDelete(sale.id)}
-                      className="delete-button"
-                    >
+                    <button onClick={() => handleDelete(sale.id)} className="delete-button">
                       Eliminar
                     </button>
                   </td>
