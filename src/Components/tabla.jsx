@@ -3,6 +3,7 @@ import { getAll } from "../Services/productosServices";
 import Producto from "./Producto";
 import Loading from "./Loading/Loading";
 import "../styles/tabla.css";
+import Pagination from "./Pagination";
 
 function Tabla() {
   const [buscar, setBuscar] = useState("");
@@ -11,6 +12,8 @@ function Tabla() {
   const [loading, setLoading] = useState(true);
   const [productos, setProductos] = useState([]);
   const [filtro, setFiltro] = useState("titulo");
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10;
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -36,11 +39,19 @@ function Tabla() {
 
   const clearInput = (setter) => () => setter("");
 
-  return (
-    <>
-      <Loading loading={loading} />
-      <div className="buscar">
-        <form onSubmit={handleSearch}>
+  // Obtener el índice del último producto en la página actual
+const indexOfLastProduct = currentPage * productsPerPage;
+// Obtener el índice del primer producto en la página actual
+const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+// Productos de la página actual
+const currentProducts = productos.slice(indexOfFirstProduct, indexOfLastProduct);
+
+const paginate = (pageNumber) => setCurrentPage(pageNumber);
+return (
+  <>
+    <Loading loading={loading} />
+    <div className="buscar">
+    <form onSubmit={handleSearch}>
           <select onChange={(e) => setFiltro(e.target.value)} value={filtro}>
             <option value="titulo">Filtrar por título</option>
             <option value="categoria">Filtrar por categoría</option>
@@ -108,48 +119,52 @@ function Tabla() {
             </div>
           )}
         </form>
-      </div>
-      <table className="tabla">
-        <thead className="tr">
-          <tr>
-            <th className="itemtabla1" scope="col">
-              Barcode
-            </th>
-            <th className="itemtabla2" scope="col">
-              Título
-            </th>
-            <th className="itemtabla3" scope="col">
-              Precio
-            </th>
-            <th className="itemtabla3" scope="col">
-              Categoría
-            </th>
-            <th className="itemtabla5" scope="col">
-              Stock
-            </th>
-            <th className="itemtabla5" scope="col">
-              Editar
-            </th>
-          </tr>
-        </thead>
-        <tbody className="tbody">
-          {productos.map((product) => (
-            <Producto
-              key={product.id}
-              id={product.id}
-              title={product.data.title}
-              stock={product.data.stock}
-              price={product.data.price}
-              category={product.data.category}
-              Barcode={product.data.Barcode}
-              variablePrice={product.data.variablePrice}
-              disabled={product.data.stock === 0}
-            />
-          ))}
-        </tbody>
-      </table>
-    </>
-  );
+    </div>
+    <table className="tabla">
+      <thead className="tr">
+        <tr>
+          <th className="itemtabla1" scope="col">
+            Barcode
+          </th>
+          <th className="itemtabla2" scope="col">
+            Título
+          </th>
+          <th className="itemtabla3" scope="col">
+            Precio
+          </th>
+          <th className="itemtabla3" scope="col">
+            Categoría
+          </th>
+          <th className="itemtabla5" scope="col">
+            Stock
+          </th>
+          <th className="itemtabla5" scope="col">
+            Editar
+          </th>
+        </tr>
+      </thead>
+      <tbody className="tbody">
+        {currentProducts.map((product) => (
+          <Producto
+            key={product.id}
+            id={product.id}
+            title={product.data.title}
+            stock={product.data.stock}
+            price={product.data.price}
+            category={product.data.category}
+            Barcode={product.data.Barcode}
+            variablePrice={product.data.variablePrice}
+            disabled={product.data.stock === 0}
+          />
+        ))}
+      </tbody>
+    </table>
+    <Pagination
+      productsPerPage={productsPerPage}
+      totalProducts={productos.length}
+      paginate={paginate}
+    />
+  </>
+);
 }
-
 export default Tabla;

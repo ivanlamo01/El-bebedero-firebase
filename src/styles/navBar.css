@@ -1,0 +1,106 @@
+/* Estilos para NavBar.css */
+
+/* Mantener el diseño original para pantallas grandes */
+
+
+.navbar-custom {
+    height: 100%;
+    width: 20%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: rgba(18, 18, 18, 255);
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(0); /* Barra visible por defecto */
+    
+}
+
+.brand {
+    color: #fff;
+    text-decoration: none;
+    font-size: 24px;
+    padding: 15px;
+    border-bottom: 1px solid #444;
+    display: block;
+}
+.brand span{
+    padding: 15px;
+}
+
+.links {
+    width: 98%;
+    margin: 1%;
+    padding: 1%;
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+    font-size: 20px;
+    color: white;
+}
+
+.navlink {
+    color: #818181;
+    text-decoration: none;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s, color 0.3s;
+    border-radius: 12px;
+    margin: 1%;
+}
+
+.navlink:hover,
+.navlink-active {
+    background-color: rgba(33, 33, 33, 255);
+    color: #fff;
+    box-shadow: 0 4px 8px black;
+    padding: 5px;
+}
+
+.navlink span {
+    margin-left: 10px;
+}
+
+.logout-container {
+    margin-top: auto;
+    padding: 10px 15px;
+    cursor: pointer;
+}
+.navbar-toggle{
+    height: 0%;
+    display: none;
+}
+
+/* Estilos para dispositivos móviles o pantallas pequeñas (menores de 950px) */
+@media (max-width: 950px) {
+    .navbar-custom {
+        width: 50%; /* Ajustar el tamaño de la barra en pantallas pequeñas */
+        transform: translateX(-100%); /* Ocultar barra lateral */
+    }
+
+    .navbar-custom.active {
+        transform: translateX(0); /* Mostrar barra lateral */
+    }
+    .brand{
+        margin-left: 50px;
+    }
+    .navbar-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 2;
+        cursor: pointer;
+        color: white;
+        background: none;
+        border: none;
+        font-size: 24px;
+        outline: none;
+    }
+}
