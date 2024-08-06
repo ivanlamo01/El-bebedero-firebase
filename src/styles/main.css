@@ -1,5 +1,51 @@
-.Main{
-    background: #e65c00; /* fallback for old browsers */
-    background: -webkit-linear-gradient(to left, #e65c00, #f9d423); /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to left, #e65c00, #f9d423); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+.cards{
+    display: flex;
+}
+.card1and2{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    margin-right: 10px
+}
+.Main {
+    background-color: rgba(33, 33, 33, 255);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px black;
+    height: 50%;
+    padding: 10px;
+}
+
+.Main:hover {
+    background: linear-gradient(to top, #434343, #000000);
+    transform: translateY(-5px); /* Desplaza hacia arriba 5px */
+    box-shadow: 0 8px 16px black;
+}
+.card2{
+    height: 50%;
+    width: 100%;
+    background-color: rgba(33, 33, 33, 255);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px black;
+    border-radius: 20px;
+    padding: 10px;
+    margin-top: 10px;
+}
+.card2:hover {
+    background: linear-gradient(to top, #434343, #000000);
+    transform: translateY(-5px); /* Desplaza hacia arriba 5px */
+    box-shadow: 0 8px 16px black;
+}
+.lastSales{
+    width: 100%;
+    background-color: rgba(33, 33, 33, 255);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px black;
+    border-radius: 20px;
+    padding: 10px;
+}
+.lastSales:hover {
+    background: linear-gradient(to top, #434343, #000000);
+    transform: translateY(-5px); /* Desplaza hacia arriba 5px */
+    box-shadow: 0 8px 16px black;
 }

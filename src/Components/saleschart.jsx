@@ -1,6 +1,8 @@
-import React, { useEffect, useState, useMemo } from 'react';
-import { collection, getDocs, getFirestore } from 'firebase/firestore';
-import { Chart } from 'react-charts';
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs, getFirestore, onSnapshot } from 'firebase/firestore';
+import ReactECharts from 'echarts-for-react';
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 
 const db = getFirestore();
 
@@ -8,82 +10,66 @@ const SalesChart = () => {
     const [salesData, setSalesData] = useState([]);
 
     useEffect(() => {
-        const fetchSales = async () => {
-            try {
-                const querySnapshot = await getDocs(collection(db, 'sales'));
-                const salesList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        const salesCollection = collection(db, 'sales');
 
-                // Agrupar ventas por día
-                const salesByDate = salesList.reduce((acc, sale) => {
-                    if (sale.timestamp && sale.timestamp.seconds) {
-                        const date = new Date(sale.timestamp.seconds * 1000).toLocaleDateString();
-                        if (!acc[date]) {
-                            acc[date] = 0;
-                        }
-                        acc[date] += parseFloat(sale.total) || 0;
-                    } else {
-                        console.error("Fecha inválida en la venta: ", sale);
+        const unsubscribe = onSnapshot(salesCollection, (snapshot) => {
+            const salesList = snapshot.docs.map(doc => doc.data());
+
+            // Obtener el inicio de la semana actual
+            const currentDate = new Date();
+            const startOfWeek = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()));
+            startOfWeek.setHours(0, 0, 0, 0); // Establecer el inicio de la semana a las 00:00:00
+
+            // Filtrar ventas de la semana actual y agruparlas por día de la semana
+            const salesByDay = salesList.reduce((acc, sale) => {
+                if (sale.timestamp && sale.timestamp.toDate) {
+                    const saleDate = sale.timestamp.toDate();
+                    if (saleDate >= startOfWeek) {
+                        const day = saleDate.getDay(); // 0 (Domingo) a 6 (Sábado)
+                        acc[day] = (acc[day] || 0) + (Number(sale.total) || 0);
                     }
-                    return acc;
-                }, {});
+                }
+                return acc;
+            }, {});
 
-                const data = Object.entries(salesByDate).map(([date, total]) => ({
-                    date: new Date(date),
-                    total
-                }));
+            // Crear un arreglo con las ventas por día
+            const salesDataArray = Array.from({ length: 7 }, (_, i) => salesByDay[i] || 0);
+            setSalesData(salesDataArray);
+        });
 
-                setSalesData(data);
-            } catch (error) {
-                console.error("Error al obtener las ventas: ", error);
-            }
-        };
-
-        fetchSales();
+        // Cleanup listener on component unmount
+        return () => unsubscribe();
     }, []);
 
-    const chartData = useMemo(
-        () => [
+    const option = {
+        legend: {},
+        tooltip: {},
+        title: [
             {
-                label: 'Ventas por Día',
-                data: salesData.map(({ date, total }) => ({
-                    primary: date,
-                    secondary: total
-                })),
-            },
-        ],
-        [salesData]
-    );
-
-    const primaryAxis = useMemo(
-        () => ({
-            getValue: datum => datum.primary,
-            scaleType: 'time',
-            // Configuración adicional
-        }),
-        []
-    );
-
-    const secondaryAxes = useMemo(
-        () => [
+              text: 'Ventas en la Ultima semana'
+            }
+          ],
+        xAxis: {
+            type: 'category',
+            data: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [
             {
-                getValue: datum => datum.secondary,
-                scaleType: 'linear',
-                // Configuración adicional
-            },
-        ],
-        []
-    );
+                data: salesData,
+                type: 'bar',
+                itemStyle: {
+                    color: '#FFAE00'
+                }
+            }
+        ]
+    };
 
     return (
-        <div style={{ width: '600px', height: '400px' }}>
-            <h2>Ventas por Día</h2>
-            <Chart
-                options={{
-                    data: chartData,
-                    primaryAxis,
-                    secondaryAxes,
-                }}
-            />
+        <div>
+            <ReactECharts option={option} />
         </div>
     );
 };

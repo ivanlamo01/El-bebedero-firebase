@@ -3,7 +3,9 @@
     background-color: rgba(18,18,18,255) ;
 }
 .main{
-    margin-left: 17%;
+    padding: 2%;
+    margin-left: 20%;
+    border-radius: 20px;
 }
 .button {
     width:100px;
@@ -17,3 +19,12 @@
     transition: background-color 0.5s ;
 }
 
+@media (max-width: 950px){
+    .main{
+        padding: 3% ;
+        margin: 0% 2% 2% 2%;
+        border-radius: 20px;
+    }
+
+
+}

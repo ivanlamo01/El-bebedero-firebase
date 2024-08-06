@@ -1,46 +1,41 @@
-import "../styles/main.css"
-import ProductosCarousel from "./productosCarousel"
+import "../styles/main.css";
+import SalesChart from "./saleschart";
 
-const style ={
-    main:{
-        width:"100%",
-        height:"100%",
-        display:"flex",
-        justifyContent:"space-evenly" ,
-        background: "#f7971e" ,
-        background: "-webkit-linear-gradient(to top, #f7971e, #ffd200)",
-        background: "linear-gradient(to top, #f7971e, #ffd200)" /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    },
-    carousel:{
-        width:"500px",
-        marginTop:"5%",
-        marginBottom:"5%",
-    },
-    text:{
-        color:"white",
-        marginTop:"300px",
-        fontWeight:"1300",
-    }
-}
-
+const style = {
+  main: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "space-evenly",
+    borderRadius: "20px",
+  },
+  text: {
+    color: "white",
+    fontWeight: "700",
+  },
+};
 
 function Main() {
-    return (
-        <>
-        <div style={style.main}>
+  return (
+    <>
+      <div className="cards">
+        <div className="card1and2">
+          <div style={style.main} className="Main">
             <div style={style.text}>
-                    <h1 style={{fontWeight:"700",fontFamily:"'Visby CF',sansSerif",}}>
-                    EL BEBEDERO
-                    </h1>
-                    <h1 style={{fontWeight:"700"}}>
-                        Sistema Punto de Venta
-                    </h1>
+              <h2 style={{color:"#FFAE00" }}>Bienvenido, <span>Nahuel</span></h2>
+              <h2 >Sistema Punto de Venta</h2>
             </div>
-            <div style={style.carousel}>
-                <ProductosCarousel />
-            </div>
+
+          </div>
+          <div className="card2">
+          <SalesChart />
+          </div>
         </div>
-        </>
-    );}
+        <div className="lastSales">
+
+        </div>
+      </div>
+    </>
+  );
+}
 
 export default Main;
