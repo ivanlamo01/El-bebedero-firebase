@@ -164,6 +164,8 @@ function Cart() {
 
   return (
     <>
+    <div className="sep">
+    </div>
       <div className="cart-container">
         <div className="left-side">
           <form onSubmit={handleSearchByBarcode} className="cart-form">

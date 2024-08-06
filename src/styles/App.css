@@ -1,9 +1,9 @@
 .App{
     font-family: Visby CF,sans-serif;
-    background-color: whitesmoke ;
+    background-color: rgba(18,18,18,255) ;
 }
 .main{
-    margin-left: 6%;
+    margin-left: 17%;
 }
 .button {
     width:100px;
