@@ -102,6 +102,7 @@ const NavBar = () => {
                         <Link
                             to="/alta"
                             className={`navlink ${location.pathname === "/alta" ? "navlink-active" : ""}`}
+                            style={{marginTop:"600px"}}
                             onClick={toggleSidebar}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -118,6 +119,8 @@ const NavBar = () => {
                             to="/ingresar"
                             className={`navlink ${location.pathname === "/ingresar" ? "navlink-active" : ""}`}
                             onClick={toggleSidebar}
+
+
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
@@ -130,6 +133,7 @@ const NavBar = () => {
                     {login && (
                         <div
                             className="navlink"
+                            style={{marginTop:"500px"}}
                             onClick={handleLogout}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

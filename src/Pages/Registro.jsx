@@ -51,7 +51,8 @@ function Registro() {
           .add({
             nombre:data.nombre,
             apellido:data.apellido,
-            userId:responseUser.user.uid
+            userId:responseUser.user.uid,
+            email:data.email
             });console.log(document);
           if (document){
             setAlert({variant:"success", text: "¡Registro Exitoso!",duration: 3000, link:"/ingresar"});

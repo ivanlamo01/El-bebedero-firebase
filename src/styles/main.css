@@ -28,24 +28,80 @@
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 8px black;
     border-radius: 20px;
-    padding: 10px;
+    padding: 20px;
     margin-top: 10px;
+    color: white;
 }
 .card2:hover {
     background: linear-gradient(to top, #434343, #000000);
     transform: translateY(-5px); /* Desplaza hacia arriba 5px */
     box-shadow: 0 8px 16px black;
 }
-.lastSales{
+.card345{
+    width: 100%;
+}
+.card34{
+    width: 100%;
+    border-radius: 20px;
+    height: 50%;
+    display: flex;
+    padding: 10px;
+}
+.card3{
+    width: 50%;
+    background-color: rgba(33, 33, 33, 255);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px black;
+    border-radius: 20px;
+    padding: 5px;
+    margin-right: 5px;
+}
+.card4{
+    width: 50%;
+    background-color: rgba(33, 33, 33, 255);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px black;
+    border-radius: 20px;
+    margin-left: 5px;
+    color: white;
+}
+.card5{
     width: 100%;
     background-color: rgba(33, 33, 33, 255);
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 8px black;
     border-radius: 20px;
-    padding: 10px;
+    height: 50%;
+    padding-top: 10px;
 }
 .lastSales:hover {
     background: linear-gradient(to top, #434343, #000000);
     transform: translateY(-5px); /* Desplaza hacia arriba 5px */
     box-shadow: 0 8px 16px black;
+}
+.totalweek{
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    color: #FFAE00;
+}
+.totalweek span{
+    padding: 2px;
+}
+.text{
+    color: white;
+    padding: 10px;
+}
+.tasklist {
+    list-style: none;
+}
+
+.task{
+    width: 100%;
+    background-color: rgba(33, 33, 33, 255);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px black;
+    border-radius: 20px;
+    color: white;
+    text-decoration: none;
 }
