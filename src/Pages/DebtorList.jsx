@@ -92,10 +92,10 @@ const DebtorsList = () => {
 
     return (
         <>
+            <div className="debtors-list">
             <div className="separador">
                 DEUDAS
             </div>
-            <div className="debtors-list">
                 <table>
                     <thead>
                         <tr>

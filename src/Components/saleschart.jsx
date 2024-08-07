@@ -54,26 +54,35 @@ const SalesChart = ({ setTotalWeeklySales, setTotalPreviousWeekSales }) => {
     }, [setTotalWeeklySales, setTotalPreviousWeekSales]);
 
     const option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {            
+                type: 'shadow'        
+            }
+        },
+        legend: {},
         xAxis: {
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                    type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                }
-            },
-            legend: {},
             type: 'category',
             data: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
         },
         yAxis: {
-            type: 'value'
+            type: 'value',
+            axisLabel: {
+                formatter: function (value) {
+                    if (value >= 1000) {
+                        return (value / 1000) + 'K';
+                    }
+                    return value;
+                }
+            }
         },
         series: [
             {
                 data: salesData,
                 type: 'bar',
                 itemStyle: {
-                    color: '#FFAE00'
+                    color: '#FFAE00',
+                    width: '20px'
                 }
             }
         ]

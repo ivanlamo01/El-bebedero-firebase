@@ -27,9 +27,10 @@ const style={
     marginTop:"50px",
     marginBottom:"50px",
     borderRadius:"30px",
-    backgroundColor:"white",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-    padding:"20px"
+    backgroundColor:"rgba(33, 33, 33, 255)",
+    boxShadow: " 0 4px 8px black",
+    padding:"20px",
+    color:"white"
 },
 
 }
@@ -67,7 +68,7 @@ function ProductosAlta() {
                 <div>
                     <span>This field is required</span>
                 </div>)}
-            <Input label="Titulo" register={{...register("title", { required: true })}}  />
+            <Input label="Titulo" register={{...register("title", { required: true })}}  className="input"/>
               {errors.apellido && (
                 <div>
                     <span>This field is required</span>

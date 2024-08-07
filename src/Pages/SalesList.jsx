@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { collection, deleteDoc, doc, getDocs, getFirestore } from "firebase/firestore";
 import "../styles/salesList.css";
-import SalesChart from "../Components/saleschart";
 
 const db = getFirestore();
 
@@ -37,11 +36,10 @@ const SalesList = () => {
 
   return (
     <>
+      <div className="sales-list">
       <div className="separado">
         <h1>VENTAS</h1>
       </div>
-
-      <div className="sales-list">
         <table>
           <thead>
             <tr>
@@ -101,7 +99,6 @@ const SalesList = () => {
             )}
           </tbody>
         </table>
-        <SalesChart />
       </div>
     </>
   );

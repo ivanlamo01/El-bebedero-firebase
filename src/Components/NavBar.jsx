@@ -102,7 +102,7 @@ const NavBar = () => {
                         <Link
                             to="/alta"
                             className={`navlink ${location.pathname === "/alta" ? "navlink-active" : ""}`}
-                            style={{marginTop:"600px"}}
+                            style={{marginTop:"100%"}}
                             onClick={toggleSidebar}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -133,7 +133,7 @@ const NavBar = () => {
                     {login && (
                         <div
                             className="navlink"
-                            style={{marginTop:"500px"}}
+                            style={{marginTop:"85%"}}
                             onClick={handleLogout}
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

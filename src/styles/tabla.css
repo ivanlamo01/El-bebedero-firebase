@@ -2,6 +2,24 @@
 .buscar {
     margin: 10px;
 }
+.buscar input {
+    padding: 8px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+.buscar form{
+    padding: 8px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+input:focus {
+    border-color: #FFAE00;
+    outline: none;
+}
 
 .tabla {
     table-layout: fixed;
