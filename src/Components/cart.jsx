@@ -204,9 +204,9 @@ function Cart() {
                     <th>Barcode</th>
                     <th>Título</th>
                     <th>Precio</th>
-                    <th>Descripción</th>
+                    <th>Descr</th>
                     <th>Cantidad</th>
-                    <th>Acciones</th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
