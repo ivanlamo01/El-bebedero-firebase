@@ -55,8 +55,17 @@
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 8px black;
     border-radius: 20px;
-    padding: 5px;
+    padding: 20px;
     margin-right: 5px;
+    color: white;
+}
+.card3 h5{
+    color: #FFAE00;
+}
+.card3:hover {
+    background: linear-gradient(to top, #434343, #000000);
+    transform: translateY(-5px); /* Desplaza hacia arriba 5px */
+    box-shadow: 0 8px 16px black;
 }
 .card4 {
     width: 50%;
@@ -160,8 +169,8 @@ button {
 }
 .overlay {
     position: fixed;
-    top: 100px;
-    left: 1000px;
+    top: 10%;
+    left: 90%px;
     width: 100%;
     height: 100%;
     z-index: 999;
@@ -190,3 +199,45 @@ button {
     border-radius: 10px;
     height: 40px;
 }
+
+  .tableCar {
+    width: 90%;
+    border-collapse: collapse;
+    color: white;
+    margin: 5%;
+    border-radius: 10px;
+  }
+
+  .tableCar th {
+    text-align: left;
+}
+.tableCar  td {
+    text-align: left;
+  
+    padding: 5px;
+  }
+  .add-expense-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .add-expense-form input {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .add-expense-form button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .add-expense-form button:hover {
+    background-color: #0056b3;
+  }
+  

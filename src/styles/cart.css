@@ -23,13 +23,13 @@
 }
 
 .right-side {
-    background-color: #f9d423;
+    background-color: #FFAE00;
     border-radius: 20px;
     flex: 3; /* 30% */
 }
 
 .total {
-    background-color: #fce448;
+    background-color: #f9d423;
     border-radius: 20px;
     padding: 10px;
     width: 90%;

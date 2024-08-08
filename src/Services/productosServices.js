@@ -58,11 +58,13 @@ export async function create(data) {
     // Normaliza el título y la categoría
     const titleNormalized = data.title.toLowerCase().replace(/\s+/g, '');
     const categoryNormalized = data.category.toLowerCase().replace(/\s+/g, '')
+    const dateOfAddition = data.dateAdded
     // Crea un nuevo objeto con los campos normalizados
     const dataWithNormalizedFields = {
         ...data,
         title_normalized: titleNormalized,
         category_normalized: categoryNormalized,
+        dateAdded:dateOfAddition
     };
 
     try {
