@@ -1,8 +1,9 @@
 .sales-list {
     font-family: Arial, sans-serif;
-    border-radius:20px;
+    border-radius: 20px;
     background-color: rgba(33, 33, 33, 255);
-    color:white;
+    color: white;
+    padding: 20px;
 }
 
 .sales-list table {
@@ -14,6 +15,7 @@
 .sales-list th, .sales-list td {
     border: 1px solid #ddd;
     padding: 8px;
+    text-align: center;
 }
 
 .sales-list details {
@@ -24,47 +26,26 @@
     font-weight: bold;
 }
 
-.sales-list {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-}
-
 .sales-list h1 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.sales-list table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-.sales-list th, .sales-list td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: center;
-}
-
-details {
-    cursor: pointer;
-}
-details summary {
-    outline: none;
-    font-weight: bold;
-}
-
-details ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-}
-.separado{
-    height:500px;
-    background-color:#FFAE00;
-    display:flex;
-    justify-content:center;
+.separado {
+    height: 500px;
+    background-color: #FFAE00;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    color:white;
+    color: white;
     border-radius: 20px;
+}
+
+.details-table {
+    width: 100%;
+}
+
+.details-btn{
+    border-radius: 5px;
+    background-color:#FFAE00
 }

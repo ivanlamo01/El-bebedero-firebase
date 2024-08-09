@@ -329,8 +329,8 @@ button {
     }
 
     .card1and2 {
-        width: 100%;
-        margin-right: 0;
+        width: 95%;
+        margin-left: 5%;
         margin-bottom: 10px;
     }
     .Main{
@@ -345,13 +345,14 @@ button {
         width: 100%;
     }
 
-    .card3,
+    .card3{
+        width: 50%;
+        margin-bottom: 10px;
+    }
     .card4 {
         width: 50%;
-        margin-right: 0;
-        margin-left: 0;
         margin-bottom: 10px;
-        padding: ;
+        margin-right: 5%;
     }
 
     .card34 {
@@ -361,6 +362,18 @@ button {
     }
 
     .card5 {
-        width: 100%
+        width: 95%;
+        margin-right: 5%;
+    }
+}
+
+@media (min-width: 1500px) {
+    .navbar-custom {
+        width: 20%;
+    }
+
+    .main {
+        margin-left: 20%;
+        padding: 2%;
     }
 }
