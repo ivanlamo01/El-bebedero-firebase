@@ -7,7 +7,7 @@ import ubi from "../Assets/img/3721984-removebg-preview.png"
 function Footer() {
     return (
         <>
-            <footer>
+            <footer className="foot">
                 <div className="container-footer-all">
                     <div className="container-body">
                         <div className="colum1">

@@ -43,6 +43,8 @@ const SalesChart = ({ setTotalWeeklySales, setTotalPreviousWeekSales }) => {
     }, [setTotalWeeklySales, setTotalPreviousWeekSales]);
 
     const option = {
+        responsive: true,
+        maintainAspectRatio: false,
         tooltip: {
             trigger: 'axis',
             axisPointer: { type: 'shadow' }
@@ -69,7 +71,7 @@ const SalesChart = ({ setTotalWeeklySales, setTotalPreviousWeekSales }) => {
     };
 
     return (
-        <div>
+        <div className='chart1'>
             <ReactECharts option={option} />
         </div>
     );

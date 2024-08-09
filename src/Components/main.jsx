@@ -237,7 +237,10 @@ function Main() {
 
           <div className="card5">
             <h4 > Comparacion de Ventas/Gastos diarios</h4>
+                    <div className="chartProf">
                     <SalesChartProfit/>
+                    </div>
+                    
           </div>
         </div>
       </div>

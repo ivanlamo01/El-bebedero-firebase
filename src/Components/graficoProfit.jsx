@@ -44,6 +44,8 @@ const SalesChartProfit = () => {
     const expensesDataArray = allDates.map(date => expensesDataMap.get(date) || 0);
 
     const option = {
+        responsive: true,
+        maintainAspectRatio: false,
         tooltip: { trigger: 'axis' },
         xAxis: {
             type: 'category',

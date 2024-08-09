@@ -3,8 +3,9 @@
     background-color: rgba(18,18,18,255) ;
 }
 .main{
-    padding: 2%;
-    margin-left: 20%;
+    padding-top: 2%;
+    padding-right: 2%;
+    margin-left: 17%;
     border-radius: 20px;
 }
 .button {
@@ -19,10 +20,12 @@
     transition: background-color 0.5s ;
 }
 
-@media (max-width: 950px){
-    .main{
-        padding: 3% ;
-        margin: 0% 2% 2% 2%;
-        border-radius: 20px;
-    }
+
+
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Evita la barra de desplazamiento lateral */
+    width: 100%;
+    box-sizing: border-box;
 }
