@@ -14,7 +14,7 @@ const AdditionsTable = () => {
         const data = doc.data();
         return {
           ...data,
-          dateAdded: data.dateAdded.toDate() // Convertir el Timestamp de Firestore a una fecha de JavaScript
+          dateAdded: data.dateAdded.toDate(), // Convertir el Timestamp de Firestore a una fecha de JavaScript
         };
       });
       setAdditions(additionsList);
@@ -25,8 +25,8 @@ const AdditionsTable = () => {
 
   return (
     <div>
-      <h5>Últimas adiciones al inventario</h5>
-      <table className='tableCar'>
+      <h5>Últimas adiciones</h5>
+      <table className="tableCar">
         <thead>
           <tr>
             <th>Producto</th>

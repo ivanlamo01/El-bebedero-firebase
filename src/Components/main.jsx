@@ -1,13 +1,13 @@
 import "../styles/main.css";
 import SalesChart from "./saleschart";
 import React, { useState, useEffect } from 'react';
-import { FaArrowUp, FaArrowDown, FaPlus, FaTimes, FaArrowLeft, FaArrowRight, FaEdit, FaTrash } from 'react-icons/fa';
-import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, query, where, getDocs, deleteDoc, limit,orderBy, } from 'firebase/firestore';
+import { FaArrowUp, FaArrowDown, FaTimes, FaArrowLeft, FaArrowRight, FaEdit, FaTrash } from 'react-icons/fa';
+import { getFirestore, doc, updateDoc, addDoc, collection, query, where, getDocs, deleteDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { Spinner, Alert, Carousel } from "react-bootstrap";
-import InventoryTable from './inventoryTable';
-import AdditionsTable from './additionsTable';
-import ExpensesTable from '../Pages/expensesTable';
+import { Spinner, Alert } from "react-bootstrap";
+import CustomCarousel from "./customCarousel";
+import SalesChartProfit from "./graficoProfit";
+
 
 const db = getFirestore();
 const auth = getAuth();
@@ -26,7 +26,7 @@ function Main() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState(null);
-  const [expenses, setExpenses] = useState([]);
+
 
   const tasksPerPage = 2;
 
@@ -131,20 +131,7 @@ function Main() {
     }
   }, [alert]);
 
-  useEffect(() => {
-    const loadExpenses = async () => {
-      const q = query(
-        collection(db, "expenses"),
-        orderBy("date", "desc"),
-        limit(5)
-      );
-      const querySnapshot = await getDocs(q);
-      const expensesList = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setExpenses(expensesList);
-    };
 
-    loadExpenses();
-  }, []);
   if (!user) {
     return <div className="Main"><h5>Por favor, inicia sesión para ver tus tareas.</h5></div>;
   }
@@ -177,34 +164,7 @@ function Main() {
         <div className="card345">
           <div className="card34">
             <div className="card3">
-              <Carousel>
-                <Carousel.Item>
-                  <InventoryTable />
-                </Carousel.Item>
-                <Carousel.Item>
-                  <AdditionsTable />
-                </Carousel.Item>
-                <Carousel.Item>
-                <h5>Últimos Gastos</h5>
-                <table className="tableCar">
-        <thead>
-          <tr>
-            <th>Descripción</th>
-            <th>Monto</th>
-          </tr>
-        </thead>
-        <tbody>
-          {expenses.map((expense, index) => (
-            <tr key={index}>
-              <td>{expense.description}</td>
-              <td>${parseFloat(expense.amount).toFixed(2)}</td>
-              
-            </tr>
-          ))}
-        </tbody>
-      </table>
-                </Carousel.Item>
-              </Carousel>
+            <CustomCarousel/>
             </div>
             
             <div className="card4">
@@ -276,8 +236,8 @@ function Main() {
           </div>
 
           <div className="card5">
-            <h5>Inventario</h5>
-            <button><FaPlus /></button>
+            <h4 > Comparacion de Ventas/Gastos diarios</h4>
+                    <SalesChartProfit/>
           </div>
         </div>
       </div>

@@ -30,7 +30,7 @@ const InventoryTable = () => {
 
   return (
     <div>
-      <h5>Productos con menor stock</h5>
+      <h5>Poco stock</h5>
       <table className="tableCar">
         <thead>
           <tr>

@@ -4,14 +4,13 @@ import {
   collection,
   query,
   orderBy,
-  limit,
   getDocs,
   addDoc,
   doc,
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
-import '../styles/expensesTable.css'; // Asegúrate de incluir el archivo CSS
+import '../styles/expensesTable.css';
 
 const db = getFirestore();
 
@@ -33,7 +32,11 @@ const ExpensesTable = () => {
         orderBy("date", "desc"),
       );
       const querySnapshot = await getDocs(q);
-      const expensesList = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      const expensesList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+        date: new Date(doc.data().date).toISOString().split('.')[0], // Asegura que la fecha esté en ISO
+      }));
       setExpenses(expensesList);
     };
 
@@ -42,14 +45,21 @@ const ExpensesTable = () => {
 
   const handleAddExpense = async () => {
     try {
+      // Asegúrate de que la fecha esté en el formato ISO al agregar o actualizar un gasto
+      const expenseToAdd = {
+        ...newExpense,
+        date: new Date(newExpense.date).toISOString().split('.')[0],
+      };
+
       if (isEditMode && currentExpenseId) {
         const expenseRef = doc(db, "expenses", currentExpenseId);
-        await updateDoc(expenseRef, newExpense);
-        setExpenses(expenses.map(exp => exp.id === currentExpenseId ? { id: currentExpenseId, ...newExpense } : exp));
+        await updateDoc(expenseRef, expenseToAdd);
+        setExpenses(expenses.map(exp => exp.id === currentExpenseId ? { id: currentExpenseId, ...expenseToAdd } : exp));
       } else {
-        const expenseRef = await addDoc(collection(db, "expenses"), newExpense);
-        setExpenses([...expenses, { id: expenseRef.id, ...newExpense }]);
+        const expenseRef = await addDoc(collection(db, "expenses"), expenseToAdd);
+        setExpenses([...expenses, { id: expenseRef.id, ...expenseToAdd }]);
       }
+
       setNewExpense({ description: "", amount: "", date: "" });
       setIsModalOpen(false);
       setIsEditMode(false);
@@ -71,10 +81,14 @@ const ExpensesTable = () => {
   const handleModal = () => {
     setIsModalOpen(true);
   };
-const handleEdit=()=>{
-  setIsEditMode(true)
-  setIsModalOpen(true)
-}
+
+  const handleEdit = (expense) => {
+    setIsEditMode(true);
+    setNewExpense(expense);
+    setCurrentExpenseId(expense.id);
+    setIsModalOpen(true);
+  };
+
   const closeModal = () => {
     setNewExpense({ description: "", amount: "", date: "" });
     setIsEditMode(false);
@@ -95,14 +109,14 @@ const handleEdit=()=>{
           </tr>
         </thead>
         <tbody>
-          {expenses.map((expense, index) => (
-            <tr key={index}>
+          {expenses.map((expense) => (
+            <tr key={expense.id}>
               <td>{expense.description}</td>
               <td>${parseFloat(expense.amount).toFixed(2)}</td>
               <td>{new Date(expense.date).toLocaleString()}</td>
               <td>
-                <button onClick={handleEdit}  className="addbutton">Editar</button>
-                <button onClick={() => handleDeleteExpense(expense.id)}className="close-button">Eliminar</button>
+                <button onClick={() => handleEdit(expense)} className="addbutton">Editar</button>
+                <button onClick={() => handleDeleteExpense(expense.id)} className="close-button">Eliminar</button>
               </td>
             </tr>
           ))}
@@ -113,14 +127,12 @@ const handleEdit=()=>{
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modala">
-            <h4>Agregar Gasto</h4>
+            <h4>{isEditMode ? "Editar Gasto" : "Agregar Gasto"}</h4>
             <input
               type="text"
               placeholder="Descripción"
               value={newExpense.description}
-              onChange={(e) =>
-                setNewExpense({ ...newExpense, description: e.target.value })
-              }
+              onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
               className="input"
               required
             />
@@ -128,18 +140,14 @@ const handleEdit=()=>{
               type="number"
               placeholder="Monto"
               value={newExpense.amount}
-              onChange={(e) =>
-                setNewExpense({ ...newExpense, amount: e.target.value })
-              }
+              onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
               className="input"
               required
             />
             <input
               type="datetime-local"
               value={newExpense.date}
-              onChange={(e) =>
-                setNewExpense({ ...newExpense, date: e.target.value })
-              }
+              onChange={(e) => setNewExpense({ ...newExpense, date: e.target.value })}
               className="input"
               required
             />
