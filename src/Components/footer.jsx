@@ -13,21 +13,15 @@ function Footer() {
                         <div className="colum1">
                             <h1>Mas informacion de la compañia</h1>
                                 <p> Esta compañia se dedica a la venta y distribucion
-                                    de camisetas originales importadas, este 
-                                texto es solo para llenara informacion en el cuadro de informacion 
-                                de la compañia.</p>
+                                    de cerveza, este 
+                                    texto es solo para llenara informacion en el cuadro de informacion 
+                                    de la compañia.</p>
                             </div>
                             <div className="colum2">
                                 <h1>Redes Sociales</h1>
                                 <div className="row" >
-                                    <img src={twitter}/>
-                                    <a href=" https://twitter.com/Ivan_lamo01" target={"_blank"}>
-                                    <label  >Siguenos en Twitter</label>
-                                    </a>
-                                </div>
-                                <div className="row" >
                                     <img src={ig}/>
-                                    <a href=" https://www.instagram.com/ivan_lamonega/?hl=es-la" target={"_blank"}>
+                                    <a href=" https://www.instagram.com/el.bebedero126/?hl=es-la" target={"_blank"}>
                                     <label  >Siguenos en Instagram</label>
                                     </a>
                                 </div>
@@ -43,11 +37,11 @@ function Footer() {
                                 </div>
                                 <div className="row2">
                                     <img src={wsp}/>
-                                    <label>+54-2213591991</label>
+                                    <label>+54-tu num</label>
                                 </div>
                                 <div className="row2">
                                     <img src={gmail}/>
-                                        <label>Cristiancedano1030@gmail.com</label>
+                                        <label>elbebedero@gmail.com</label>
                                 </div>
                             </div>
                         </div>

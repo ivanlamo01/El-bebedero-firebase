@@ -10,25 +10,40 @@ import ProductosAlta from '../Pages/ProductosAlta';
 import ProductosModificar from '../Pages/ProductosModificar';
 import AuthProvider from '../Context/AuthContext';
 import Footer from "../Components/footer"
+import { CartProvider } from '../Context/CartContext';
+import Cart from '../Components/cart';
+import DebtorsList from '../Pages/DebtorList';
+import SalesList from '../Pages/SalesList';
+import ExpensesTable from '../Pages/expensesTable';
+
 
 function Public() {
     
     return (
     <AuthProvider>
+        <CartProvider>
     <div className="App">
             <NavBar />
-                <Routes>
+            <div className='main'>
+            <Routes>
                     <Route  path="/" element={<Home/>} />
                     <Route  path="/inventario" element={<Inventario/>} />
+                    <Route  path="/cart" element={<Cart/>} />
+                    <Route  path="/sales" element={<SalesList/>} />
+                    <Route  path="/expenses" element={<ExpensesTable/>} />
+                    <Route path="/debtors" element={<DebtorsList/>} />
                     <Route  path="/alta" element={<Registro/>}/>
                     <Route  path="/ingresar" element={<Login/>}/>
                     <Route  path="/detalle/:detalleId" element={<DetalleProd />}/>
                     <Route  path="/detalle/editar/:detalleId" element={<ProductosModificar />}/>
                     <Route  path="/compra" element={<PagDeCompra/>}/>
-                    <Route  path="/productos/ProductosAlta" element={<ProductosAlta />}/>
+                    <Route  path="/inventario/ProductosAlta" element={<ProductosAlta />}/>
                 </Routes>
+            </div>
+
             <Footer/>
     </div>
+    </CartProvider>
     </AuthProvider>
     );
 }

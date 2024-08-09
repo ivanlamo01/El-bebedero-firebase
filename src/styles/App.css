@@ -1,7 +1,12 @@
 .App{
     font-family: Visby CF,sans-serif;
+    background-color: rgba(18,18,18,255) ;
 }
-
+.main{
+    padding: 2%;
+    margin-left: 20%;
+    border-radius: 20px;
+}
 .button {
     width:100px;
     height:50px;
@@ -12,4 +17,12 @@
 .button:hover{
     background-color:#f44c7f ;
     transition: background-color 0.5s ;
+}
+
+@media (max-width: 950px){
+    .main{
+        padding: 3% ;
+        margin: 0% 2% 2% 2%;
+        border-radius: 20px;
+    }
 }

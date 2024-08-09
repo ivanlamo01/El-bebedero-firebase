@@ -1,0 +1,70 @@
+.sales-list {
+    font-family: Arial, sans-serif;
+    border-radius:20px;
+    background-color: rgba(33, 33, 33, 255);
+    color:white;
+}
+
+.sales-list table {
+    margin-top: 1%;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sales-list th, .sales-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.sales-list details {
+    cursor: pointer;
+}
+
+.sales-list details summary {
+    font-weight: bold;
+}
+
+.sales-list {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.sales-list h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sales-list table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.sales-list th, .sales-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+details {
+    cursor: pointer;
+}
+details summary {
+    outline: none;
+    font-weight: bold;
+}
+
+details ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+.separado{
+    height:500px;
+    background-color:#FFAE00;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    color:white;
+    border-radius: 20px;
+}

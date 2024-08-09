@@ -1,6 +1,5 @@
 
-
-*{
+footer{
     margin: 0px;
     padding: 0px;
     box-sizing: border-box;
@@ -8,10 +7,10 @@
 }
 
 footer{
-    width: 100%;
-    background: #f44c7f;
+    width: 80%;
+    background: #002320;
     color: white;   
-
+    margin-left: 20%;
 }
 
 .container-footer-all{

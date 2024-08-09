@@ -13,7 +13,7 @@ import Loading from "../Components/Loading/Loading";
 const style={
   separador:{
       height:"500px",
-      backgroundColor:"#027fbb",
+      backgroundColor:"#FFAE00",
       display:"flex",
       justifyContent:"center"
   },
@@ -22,7 +22,17 @@ const style={
     marginTop:"200px",
     fontSize:"60px",
     fontWeight:"900"
-},}
+},
+container:{
+  maxWidth:"370px",
+  marginTop:"50px",
+  marginBottom:"50px",
+  borderRadius:"30px",
+  backgroundColor:"white",
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+  padding:"20px"
+},
+}
 
 
 function ProductosAlta() {
@@ -37,8 +47,9 @@ function ProductosAlta() {
         const response = await getById(detalleId)
         setValue("title",response.data().title)
         setValue("price",response.data().price)
-        setValue("thumbnail",response.data().thumbnail)
-        setValue("description",response.data().description) 
+        setValue("category",response.data().category)
+        setValue("stock",response.data().stock) 
+        setValue("Barcode",response.data().Barcode) 
         setLoading(false)
       } catch (e) {
         console.log(e);
@@ -52,7 +63,7 @@ function ProductosAlta() {
     try {
       const document =  update(detalleId,data)
       if (document) {
-        navigate('/')
+        navigate('/inventario')
       }
     } catch (e) {
       console.log(e)
@@ -76,14 +87,9 @@ function ProductosAlta() {
     </div>
     <Loading loading={loading} >
       <div>
-      <Container>
+      <Container style={style.container}>
       <Form onSubmit={handleSubmit(onSubmit)}>
-            <Input label="imagen"   register={{...register("thumbnail", { required: true })}} />
-                  {errors.email && (
-                    <div>
-                        <span>This field is required</span>
-                    </div>)}
-            <Input label="Precio" register={{...register("price", { required: true })}}/>
+      <Input label="Precio" register={{...register("price", { required: true })}}/>
                 {errors.nombre && (
                 <div>
                     <span>This field is required</span>
@@ -93,12 +99,21 @@ function ProductosAlta() {
                 <div>
                     <span>This field is required</span>
                 </div>)}
-            <Input label="Descripcion"   register={{...register("description", { required: true })}} />
+            <Input label="Categoria"   register={{...register("category", { required: true })}} />
               {errors.email && (
                 <div>
                     <span>This field is required</span>
                 </div>)}
-
+                <Input label="Codigo de baras"   register={{...register("Barcode", { required: true })}} />
+              {errors.email && (
+                <div>
+                    <span>This field is required</span>
+                </div>)}
+                <Input label="Stock"   register={{...register("stock", { required: true })}} />
+              {errors.email && (
+                <div>
+                    <span>This field is required</span>
+                </div>)}
               <Button variant="primary" type="submit" >Guardar</Button>
               <Button variant="danger" type="submit" onClick={handleDelete} >Eliminar</Button>
         </Form>

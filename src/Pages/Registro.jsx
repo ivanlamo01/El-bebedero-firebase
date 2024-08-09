@@ -11,7 +11,7 @@ import ButtonWhitLoading from "../Components/buttonWhitLoading"
 const style={
   separador:{
       height:"500px",
-      backgroundColor:"#027fbb",
+      backgroundColor:"#FFAE00",
       display:"flex",
       justifyContent:"center"
   },
@@ -32,8 +32,6 @@ const style={
   },
 }
 
-
-
 function Registro() {
   
   const { register, handleSubmit, formState: { errors } } = useForm({mode:"onChange"});
@@ -53,7 +51,8 @@ function Registro() {
           .add({
             nombre:data.nombre,
             apellido:data.apellido,
-            userId:responseUser.user.uid
+            userId:responseUser.user.uid,
+            email:data.email
             });console.log(document);
           if (document){
             setAlert({variant:"success", text: "¡Registro Exitoso!",duration: 3000, link:"/ingresar"});

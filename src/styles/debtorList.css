@@ -1,0 +1,97 @@
+.debtors-list {
+    margin: 20px;
+    border-radius:20px;
+    background-color: rgba(33, 33, 33, 255);
+    color:white;
+    padding-bottom: 1%;
+}
+
+.debtors-list table {
+    width: 100%;
+    table-layout: fixed;
+    width: 95%;
+    margin-left: 2.5%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.debtors-list th, .debtors-list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.debtors-list details {
+    cursor: pointer;
+}
+
+.debtors-list summary {
+    font-weight: bold;
+}
+.edit-button {
+    background-color: #4de1c1;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.delete-button {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.edit-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    width: 300px;
+    text-align: center;
+}
+
+.edit-modal input {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.save-button, .cancel-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.cancel-button {
+    background-color: #f44336;
+}
+.separador{
+    width: 100%;
+    height:500px;
+    background-color:#FFAE00;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    color:white;
+    font-size:60px;
+    font-weight:900;
+    border-radius: 20px;
+}

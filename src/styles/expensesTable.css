@@ -1,0 +1,89 @@
+.expenses-list {
+    margin: 20px;
+    border-radius: 20px;
+    background-color: rgba(33, 33, 33, 255);
+    color: white;
+    padding: 1%;
+  }
+  
+  .expenses-table {
+    margin-top: 2%;
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .expenses-table th, .expenses-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .add-expense-form {
+    max-width: 370px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    border-radius: 30px;
+    background-color: rgba(33, 33, 33, 255);
+    box-shadow: 0 4px 8px black;
+    padding: 20px;
+    color: white;
+  }
+  
+  .addbutton, .close-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+  }
+  
+  .close-button {
+    background-color: #f44336;
+  }
+  
+  .add-button:hover {
+    background-color: #45a049;
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modala {
+    background-color: rgba(33, 33, 33, 255);
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px black;
+    border-radius: 10px;
+    color: white;
+    padding: 2%;
+    width: 90%;
+    max-width: 500px;
+    margin-left: 30%;
+    z-index: 90000000;
+  }
+  
+  .modala h4 {
+    color:#FFAE00; 
+  }
+  
+  .input {
+    display: block;
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  

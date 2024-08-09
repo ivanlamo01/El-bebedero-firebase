@@ -3,57 +3,56 @@ import {Button} from "react-bootstrap";
 import { useAuthContext } from "../Context/AuthContext";
 
 const style={
-    precioBoton:{
-        display:"flex",
-        flexDirection:"row",
-        justifyContent:"space-between",
-        
-    },
     buttons:{
         height:"40px",
         marginTop:"20px",
-        backgroundColor:"#202d56",
-        margin:"10px"
+        backgroundColor:"#4de1c1",
+        margin:"10px",
+        border:"none"
     },
-    botones:{
-        display:"flex",
+    itemtabla1:{
+        width:"20%",
+        padding:"10px",
     },
-    tabla:{
-        width:"90%",
-        margin:"10%"
+    itemtabla2:{
+        width:"20%",
     },
-    itemtabla:{
-        width:"15%"
+    itemtabla3:{
+        width:"15%",
+    },
+    itemtabla5:{
+        width:"12.5%",
+    },
+    deshabilitado: {
+        color: "gray",
+        textDecoration: "line-through",
+    },
+    tr:{
+        border: "#ddd 1px solid",
+        borderCollapse: "collapse",
     }
-    }
+}
 
-function Producto({id,title,price,thumbnail,description}) {
+
+function Producto({id,title,price,Barcode,category,stock}) {
     const {login} = useAuthContext()
     return (
         
         <> 
-                    <div>
-                    <table style={style.tabla}>
-                        <tbody>
-                            <tr>
-                                <th style={style.itemtabla} scope="row">{id}</th>
-                                <td style={style.itemtabla}>{title}</td>
-                                <td style={style.itemtabla}>{price}</td>
-                                <td style={style.itemtabla}>{description}</td>
-                                <td style={style.itemtabla}>
-                                    <Button  className="boton" as={Link} to={`/detalle/${id}`} style={style.buttons}>Comprar</Button>
-                                </td>
-                                <td style={style.itemtabla}>
+                            <tr style={stock <= 0 ? style.deshabilitado : style.tr}>
+                                <td style={style.itemtabla1}>{Barcode}</td>
+                                <td style={style.itemtabla2}>{title}</td>
+                                <td style={style.itemtabla3}>{price}</td>
+                                <td style={style.itemtabla3}>{category}</td>
+                                <td style={style.itemtabla5}>{stock}</td>
+                                <td style={style.itemtabla5}>
                                     {login&&(
                                     <>
-                                        <Button  className="boton" as={Link} to={`/detalle/editar/${id}`} style={style.buttons}>Editar</Button>
+                                        <Button as={Link} to={`/detalle/editar/${id}`} style={style.buttons}>Editar</Button>
                                     </>
                                     )}
                                 </td>
                             </tr>
-                        </tbody>
-                        </table>
-                    </div>
                     
             
         </>

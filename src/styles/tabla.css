@@ -1,0 +1,62 @@
+
+.buscar {
+    margin: 10px;
+}
+.buscar input {
+    padding: 8px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+.buscar form{
+    padding: 8px;
+    margin: 5px 0;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+input:focus {
+    border-color: #FFAE00;
+    outline: none;
+}
+
+.tabla {
+    table-layout: fixed;
+    width: 95%;
+    margin-left: 2.5%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    text-align: center;
+    border-radius: 20px;
+}
+
+.itemtabla1 {
+    width: 20%;
+    padding: 10px;
+}
+
+.itemtabla2 {
+    width: 20%;
+}
+
+.itemtabla3 {
+    width: 15%;
+}
+
+.itemtabla5 {
+    width: 12.5%;
+}
+
+.tbody {
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.clearButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 5px;
+}
