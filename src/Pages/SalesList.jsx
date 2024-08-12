@@ -29,12 +29,16 @@ const SalesList = () => {
           return acc;
         }, {});
 
+        // Convertir el objeto a un array y ordenar por fecha
         const salesArray = Object.entries(groupedSales).map(([date, data]) => ({
           date,
           total: data.total.toFixed(2),
           count: data.count,
           sales: data.sales,
         }));
+
+        // Ordenar por fecha, de más reciente a más antigua
+        salesArray.sort((a, b) => new Date(b.date) - new Date(a.date));
 
         setSalesByDate(salesArray);
       } catch (error) {
@@ -46,18 +50,21 @@ const SalesList = () => {
   }, []);
 
   const handleDelete = async (id, date) => {
-    try {
-      await deleteDoc(doc(db, "sales", id));
-      const updatedSales = salesByDate.map((day) => {
-        if (day.date === date) {
-          const filteredSales = day.sales.filter((sale) => sale.id !== id);
-          return { ...day, sales: filteredSales, count: day.count - 1, total: day.total - Number(filteredSales.total) };
-        }
-        return day;
-      }).filter(day => day.sales.length > 0);
-      setSalesByDate(updatedSales);
-    } catch (error) {
-      console.error("Error al eliminar la venta: ", error);
+    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar esta venta?");
+    if (confirmDelete) {
+      try {
+        await deleteDoc(doc(db, "sales", id));
+        const updatedSales = salesByDate.map((day) => {
+          if (day.date === date) {
+            const filteredSales = day.sales.filter((sale) => sale.id !== id);
+            return { ...day, sales: filteredSales, count: day.count - 1, total: day.total - Number(filteredSales.find(sale => sale.id === id)?.total || 0) };
+          }
+          return day;
+        }).filter(day => day.sales.length > 0);
+        setSalesByDate(updatedSales);
+      } catch (error) {
+        console.error("Error al eliminar la venta: ", error);
+      }
     }
   };
 

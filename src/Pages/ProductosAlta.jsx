@@ -14,7 +14,8 @@ const style = {
     height: "500px",
     backgroundColor: "#FFAE00",
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
+    borderRadius:"20px"
   },
   h1: {
     color: "white",

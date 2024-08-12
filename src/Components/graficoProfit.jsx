@@ -55,6 +55,9 @@ const SalesChartProfit = () => {
         yAxis: {
             type: 'value',
             name: 'Monto',
+            axisLabel: {
+                formatter: (value) => (value >= 1000 ? (value / 1000) + 'K' : value)
+            },
         },
         dataZoom: [
             {

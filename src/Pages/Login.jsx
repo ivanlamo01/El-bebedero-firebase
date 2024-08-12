@@ -12,20 +12,17 @@ import {Button, Spinner } from "react-bootstrap";
 
 const style={
     separador:{
-        height:"500px",
-        backgroundColor:"#FFAE00",
-        display:"flex",
-        justifyContent:"center"
+        height: "500px",
+        backgroundColor: "#FFAE00",
+        display: "flex",
+        justifyContent: "center",
+        borderRadius:"20px"
     },
     h1:{
         color:"white",
         marginTop:"200px",
         fontSize:"60px",
         fontWeight:"900"
-    },
-    container:{
-        maxWidth:"370px",
-        marginTop:"50px"
     },
     button:{
         width:"100%",
@@ -37,9 +34,16 @@ const style={
         height:"70px",
         backgroundColor:"orange"
     },    
-    label:{
-        color:"#454545",
-    }
+    container: {
+        maxWidth: "370px",
+        marginTop: "50px",
+        marginBottom: "50px",
+        borderRadius: "30px",
+        backgroundColor: "rgba(33, 33, 33, 255)",
+        boxShadow: "0 4px 8px black",
+        padding: "20px",
+        color: "white"
+      }
 }
 
 function Login() {
@@ -78,12 +82,12 @@ function Login() {
                 </div>
                 <Container style={style.container}>
                 <Form onSubmit={handleSubmit(onSubmit)}>
-                    <Input label="E-mail"  type='email' autoComplete="username"  register={{...register("email", { required: true })}} style={style.label}/>
+                    <Input label="E-mail" className="input"  type='email' autoComplete="username"  register={{...register("email", { required: true })}}/>
                         {errors.email && (
                             <div>
                                 <span>This field is required</span>
                             </div>)}
-                    <Input label="Contraseña" type="password" autoComplete="current-password" register={{...register("password", { required: true, minLength:6})}} style={style.label}/>
+                    <Input label="Contraseña" type="password" autoComplete="current-password" register={{...register("password", { required: true, minLength:6})}} className="input"/>
                         {errors.password && (
                             <div>
                                 {errors.password?.type === "required" && <span>This field is required</span> }

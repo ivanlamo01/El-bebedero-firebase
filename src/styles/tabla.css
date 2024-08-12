@@ -1,7 +1,7 @@
-
 .buscar {
     margin: 10px;
 }
+
 .buscar input {
     padding: 8px;
     margin: 5px 0;
@@ -9,48 +9,26 @@
     border: 2px solid transparent;
     border-radius: 4px;
 }
-.buscar form{
+.buscar select {
+    padding: 8px;
+    margin: 5px 0;
+    margin-left: 20px;
+    box-sizing: border-box;
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+
+.buscar form {
     padding: 8px;
     margin: 5px 0;
     box-sizing: border-box;
     border: 2px solid transparent;
     border-radius: 4px;
 }
+
 input:focus {
     border-color: #FFAE00;
     outline: none;
-}
-
-.tabla {
-    table-layout: fixed;
-    width: 95%;
-    margin-left: 2.5%;
-    border-collapse: collapse;
-    border: 1px solid #ddd;
-    text-align: center;
-    border-radius: 20px;
-}
-
-.itemtabla1 {
-    width: 20%;
-    padding: 10px;
-}
-
-.itemtabla2 {
-    width: 20%;
-}
-
-.itemtabla3 {
-    width: 15%;
-}
-
-.itemtabla5 {
-    width: 12.5%;
-}
-
-.tbody {
-    border-collapse: collapse;
-    text-align: center;
 }
 
 .clearButton {
@@ -59,4 +37,71 @@ input:focus {
     cursor: pointer;
     font-size: 16px;
     padding: 0 5px;
+}
+
+.tabla {
+    table-layout: auto; /* Cambiado a 'auto' para permitir el ajuste dinámico del tamaño de las columnas */
+    width: 95%;
+    margin-left: 2.5%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    text-align: center;
+    border-radius: 20px;
+    overflow-x: auto; /* Permite desplazamiento horizontal */
+}
+
+.tbody {
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.itemtabla1, .itemtabla2, .itemtabla3, .itemtabla5 {
+    padding: 10px;
+    white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+}
+
+.itemtabla1 {
+    word-wrap: break-word; /* Permite que el texto haga wrap en la columna Barcode */
+    word-break: break-all; /* Asegura que las palabras largas se dividan para evitar desbordes */
+}
+
+.edit-button {
+    height: 40px;
+    margin-top: 20px;
+    background-color: #4de1c1;
+    margin: 10px;
+    border: none;
+}
+
+/* Aplica a las celdas de los datos */
+.tbody td {
+    word-wrap: break-word;
+    word-break: break-all;
+}
+
+@media (max-width: 700px) {
+    .tabla {
+        font-size: 14px; /* Reduce ligeramente el tamaño de la fuente */
+        width: 95%; /* Asegura que la tabla ocupe todo el ancho de la pantalla */
+    }
+
+    .itemtabla1, .itemtabla2, .itemtabla3 {
+        padding: 8px; /* Reduce el padding en pantallas pequeñas */
+    }
+
+    th, td {
+        text-align: center; /* Mantén el texto centrado */
+    }
+
+    .itemtabla5 {
+        display: none; /* Oculta la columna de "Editar" */
+    }
+
+    /* Redistribuye el espacio entre las columnas restantes */
+    .itemtabla1, .itemtabla2, .itemtabla3 {
+        width: auto; /* Permite que las columnas se expandan para ocupar el espacio restante */
+    }
+    .edit-button {
+        display: none;
+    }
 }

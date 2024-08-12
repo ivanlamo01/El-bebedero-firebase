@@ -181,7 +181,7 @@ function Main() {
                 </button>
               </div>
               {(isAddingTask || isEditingTask) && (
-                <div className="overlay" onClick={() => { setIsAddingTask(false); setIsEditingTask(false); setCurrentTask(null); }}>
+                <div className="modal-overlay" onClick={() => { setIsAddingTask(false); setIsEditingTask(false); setCurrentTask(null); }}>
                   <div className="input-field" onClick={(e) => e.stopPropagation()}>
                     <input 
                       type="text" 

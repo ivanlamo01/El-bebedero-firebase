@@ -130,10 +130,21 @@ export const addSale = async (sale) => {
 export const fetchSalesData = async () => {
     const salesCollection = collection(db, 'sales');
     const querySnapshot = await getDocs(salesCollection);
-    return querySnapshot.docs.map(doc => ({
-        date: doc.data().timestamp ? new Date(doc.data().timestamp.seconds * 1000).toISOString().split('T')[0] : null,
-        total: Number(doc.data().total) || 0,
-    })).filter(sale => sale.date !== null);
+
+    return querySnapshot.docs.map(doc => {
+        const timestamp = doc.data().timestamp;
+        const saleDate = timestamp ? new Date(timestamp.seconds * 1000) : null;
+        
+        if (saleDate) {
+            saleDate.setHours(0, 0, 0, 0);  // Asegurarse de que la hora no cause desplazamiento de días
+        }
+
+        const totalStr = String(doc.data().total);
+        return {
+            date: saleDate ? saleDate.toISOString().split('T')[0] : null,
+            total: Number(totalStr.replace(/[^0-9.-]+/g, "")) || 0,
+        };
+    }).filter(sale => sale.date !== null);
 };
 
 export const fetchExpensesData = async () => {

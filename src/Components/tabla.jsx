@@ -175,10 +175,12 @@ return (
       </tbody>
     </table>
     <Pagination
-      productsPerPage={productsPerPage}
-      totalProducts={productos.length}
-      paginate={paginate}
-    />
+  productsPerPage={productsPerPage}
+  totalProducts={productos.length}
+  currentPage={currentPage}
+  paginate={paginate}
+/>
+
   </>
 );
 }

@@ -168,6 +168,7 @@ function Cart() {
     </div>
       <div className="cart-container">
         <div className="left-side">
+          <h4>Iniciar Venta</h4>
           <form onSubmit={handleSearchByBarcode} className="cart-form">
             <input
               type="text"

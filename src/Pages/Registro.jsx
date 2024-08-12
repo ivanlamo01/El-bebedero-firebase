@@ -21,10 +21,16 @@ const style={
       fontSize:"60px",
       fontWeight:"900"
   },
-  container:{
-    maxWidth:"370px",
-    marginTop:"50px"
-},
+  container: {
+    maxWidth: "370px",
+    marginTop: "50px",
+    marginBottom: "50px",
+    borderRadius: "30px",
+    backgroundColor: "rgba(33, 33, 33, 255)",
+    boxShadow: "0 4px 8px black",
+    padding: "20px",
+    color: "white"
+  },
   button:{
     width:"100%",
     height:"70px",

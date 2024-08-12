@@ -99,7 +99,9 @@ const ExpensesTable = () => {
   return (
     <div className="expenses-list">
       <div className="separador">Últimos gastos</div>
+      <button className="addbutton" onClick={handleModal}>Agregar Gasto</button>
       <table className="expenses-table">
+      
         <thead>
           <tr>
             <th>Descripción</th>
@@ -122,7 +124,7 @@ const ExpensesTable = () => {
           ))}
         </tbody>
       </table>
-      <button className="addbutton" onClick={handleModal}>Agregar Gasto</button>
+
 
       {isModalOpen && (
         <div className="modal-overlay">

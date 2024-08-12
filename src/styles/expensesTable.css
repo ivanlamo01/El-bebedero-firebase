@@ -71,7 +71,7 @@
     width: 90%;
     max-width: 500px;
     margin-left: 30%;
-    z-index: 90000000;
+    z-index: 1000;
   }
   
   .modala h4 {

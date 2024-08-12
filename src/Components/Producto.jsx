@@ -3,13 +3,7 @@ import {Button} from "react-bootstrap";
 import { useAuthContext } from "../Context/AuthContext";
 
 const style={
-    buttons:{
-        height:"40px",
-        marginTop:"20px",
-        backgroundColor:"#4de1c1",
-        margin:"10px",
-        border:"none"
-    },
+
     itemtabla1:{
         width:"20%",
         padding:"10px",
@@ -48,7 +42,7 @@ function Producto({id,title,price,Barcode,category,stock}) {
                                 <td style={style.itemtabla5}>
                                     {login&&(
                                     <>
-                                        <Button as={Link} to={`/detalle/editar/${id}`} style={style.buttons}>Editar</Button>
+                                        <Button as={Link} to={`/detalle/editar/${id}`} className="edit-button" >Editar</Button>
                                     </>
                                     )}
                                 </td>
