@@ -47,8 +47,6 @@ function Producto({id,title,price,Barcode,category,stock}) {
                                     )}
                                 </td>
                             </tr>
-                    
-            
         </>
         );
     }
