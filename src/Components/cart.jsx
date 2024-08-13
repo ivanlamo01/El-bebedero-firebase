@@ -1,11 +1,10 @@
 import { useCart } from "../Context/CartContext";
-import { getProductByBarcode, getProductByTitle,updateProductStock } from "../Services/productosServices";
+import { getProductByBarcode, getProductByTitle, updateProductStock } from "../Services/productosServices";
 import { useState, useEffect, useCallback } from "react";
 import React from 'react';
 import '../styles/cart.css';
 import { Spinner } from "react-bootstrap";
 import { collection, addDoc, getFirestore } from "firebase/firestore";
-
 
 const db = getFirestore();
 
@@ -19,6 +18,7 @@ function Cart() {
   const [debtorName, setDebtorName] = useState('');
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({ variant: "", text: "" });
+  const [paymentError, setPaymentError] = useState(false); // Nuevo estado para el error
 
   const handleSearchByBarcode = async (event) => {
     event.preventDefault();
@@ -89,11 +89,17 @@ function Cart() {
   };
 
   const confirmPurchase = async () => {
+    if (!paymentMethod) {
+      setPaymentError(true);
+      return;
+    }
+
     if (paymentMethod === 'Deuda' && !debtorName) {
       showAlert('danger', 'Por favor, ingrese el nombre del deudor.');
       return;
     }
-    try { 
+
+    try {
       setLoading(true);
       for (const item of cart) {
         if (item && item.data && item.data.Barcode) {
@@ -112,7 +118,7 @@ function Cart() {
           console.error('Producto inválido en el carrito:', item);
         }
       }
-  
+
       const sale = {
         total: total,
         products: cart.map(item => ({
@@ -125,7 +131,7 @@ function Cart() {
         timestamp: new Date()
       };
       await addDoc(collection(db, "sales"), sale);
-  
+
       if (paymentMethod === 'Deuda') {
         const debt = {
           name: debtorName,
@@ -140,7 +146,7 @@ function Cart() {
         };
         await addDoc(collection(db, "debts"), debt);
       }
-  
+
       clearCart();
       showAlert('success', 'Compra confirmada y stock actualizado');
     } catch (error) {
@@ -151,7 +157,6 @@ function Cart() {
       setShowModal(false);
     }
   };
-  
 
   const calculateTotal = useCallback(() => {
     const total = cart.reduce((acc, item) => acc + (parseFloat(item.customPrice) || 0) * item.quantity, 0);
@@ -164,11 +169,10 @@ function Cart() {
 
   return (
     <>
-    <div className="sep">
-    </div>
+      <div className="sep"></div>
       <div className="cart-container">
         <div className="left-side">
-          <h4>Iniciar Venta</h4>
+          <h4 style={{color:"#FFAE00"}}>Iniciar Venta</h4>
           <form onSubmit={handleSearchByBarcode} className="cart-form">
             <input
               type="text"
@@ -193,7 +197,7 @@ function Cart() {
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             </button>
           </form>
-          
+
           {cart.length === 0 ? (
             <p>El carrito está vacío</p>
           ) : (
@@ -260,12 +264,20 @@ function Cart() {
         <div className="modal" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
           <div className="modal-content" style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', width: '300px', textAlign: 'center' }}>
             <h2>Seleccionar Medio de Pago</h2>
-            <select onChange={(e) => setPaymentMethod(e.target.value)} value={paymentMethod}>
+            <select 
+              onChange={(e) => {
+                setPaymentMethod(e.target.value);
+                setPaymentError(false); // Limpiar el error cuando se selecciona un método de pago
+              }} 
+              value={paymentMethod} 
+              required
+            >
               <option value="">Seleccionar</option>
               <option value="Deuda">Deuda</option>
-              <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+              <option value="Transferencia">Transferencia</option>
               <option value="Efectivo">Efectivo</option>
             </select>
+            {paymentError && <p style={{ color: 'red' }}>Por favor, seleccione un método de pago.</p>}
             {paymentMethod === 'Deuda' && (
               <>
                 <input

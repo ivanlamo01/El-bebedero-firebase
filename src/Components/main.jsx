@@ -140,7 +140,7 @@ function Main() {
     <>
       <div className="cards">
         <div className="card1and2">
-          <div className="Main">
+          <div className="Mainn">
             <div className="text">
               <h5>Bienvenido, <span style={{color:"#FFAE00"}}>{user.nombre || user.email} &#128075;</span></h5>
               <h2>Vista General</h2>

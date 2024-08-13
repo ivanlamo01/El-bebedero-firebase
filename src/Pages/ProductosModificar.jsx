@@ -15,7 +15,8 @@ const style={
       height:"500px",
       backgroundColor:"#FFAE00",
       display:"flex",
-      justifyContent:"center"
+      justifyContent:"center",
+      borderRadius:"20px"
   },
   h1:{
     color:"white",
@@ -24,13 +25,14 @@ const style={
     fontWeight:"900"
 },
 container:{
-  maxWidth:"370px",
-  marginTop:"50px",
-  marginBottom:"50px",
-  borderRadius:"30px",
-  backgroundColor:"white",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-  padding:"20px"
+  maxWidth: "370px",
+  marginTop: "50px",
+  marginBottom: "50px",
+  borderRadius: "30px",
+  backgroundColor: "rgba(33, 33, 33, 255)",
+  boxShadow: "0 4px 8px black",
+  padding: "20px",
+  color: "white"
 },
 }
 

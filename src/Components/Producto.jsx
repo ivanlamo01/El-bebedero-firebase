@@ -3,7 +3,6 @@ import {Button} from "react-bootstrap";
 import { useAuthContext } from "../Context/AuthContext";
 
 const style={
-
     itemtabla1:{
         width:"20%",
         padding:"10px",
