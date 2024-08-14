@@ -66,7 +66,7 @@ input:focus {
 }
 
 .edit-button {
-    height: 40px;
+    height: 50px;
     margin-top: 20px;
     background-color: #4de1c1;
     margin: 10px;
@@ -78,13 +78,26 @@ input:focus {
     word-wrap: break-word;
     word-break: break-all;
 }
-
+.separadorA{
+    width: 100%;
+    height:500px;
+    background-color:#FFAE00;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    color:white;
+    font-size:60px;
+    font-weight:700;
+    border-radius: 20px;
+}
 @media (max-width: 700px) {
     .tabla {
         font-size: 14px; /* Reduce ligeramente el tamaño de la fuente */
         width: 95%; /* Asegura que la tabla ocupe todo el ancho de la pantalla */
     }
-
+    .separadorA{
+        font-size:40px ;
+    }
     .itemtabla1, .itemtabla2, .itemtabla3 {
         padding: 8px; /* Reduce el padding en pantallas pequeñas */
     }
@@ -104,4 +117,8 @@ input:focus {
     .edit-button {
         display: none;
     }
+    .barcodeTabla , .itemtabla1{
+        display: none;
+    }
+
 }

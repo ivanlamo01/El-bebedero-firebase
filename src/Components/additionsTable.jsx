@@ -37,7 +37,7 @@ const AdditionsTable = () => {
           {additions.map((addition, index) => (
             <tr key={index}>
               <td>{addition.title}</td>
-              <td>{addition.dateAdded.toLocaleString()}</td>
+              <td>{addition.dateAdded.toLocaleDateString()}</td>
             </tr>
           ))}
         </tbody>

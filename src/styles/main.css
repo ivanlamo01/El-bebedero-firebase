@@ -59,7 +59,7 @@
 }
 
 .card34 {
-    width: 95%;
+    width: 100%;
     border-radius: 20px;
     height: 50%;
     display: flex;
@@ -110,7 +110,7 @@
     border-radius: 20px;
     height: 55%;
     padding-top: 10px;
-    width: 95%;
+    width: 100%;
     padding-left: 10px;
 }
 
@@ -308,22 +308,18 @@ button {
     margin-left:5%
 }
 
-@media (max-width: 950px) {
-    .main {
-        margin-left: 0%;
+@media (max-width:750px){
+    .card34{
+        display: block;
     }
-
-    .foot {
-        margin-left: 0%;
-        width: 100%;
+    .card3{
+        width: 100% !important
     }
-}
-@media (max-width: 1500px) {
-    .cards{
-        width: 105%;
+    .card4{
+        width: 100% !important
     }
 }
-@media (max-width: 1200px) {
+@media (max-width: 1300px) {
     .cards {
         flex-direction: column;
         width: 100%;
@@ -334,7 +330,7 @@ button {
     }
 
     .card1and2 {
-        width: 95%;
+        width: 90%;
         margin-left: 5%;
         margin-bottom: 10px;
     }
@@ -342,11 +338,6 @@ button {
         width: 100%;
     }
     .card2 {
-        width: 100%;
-    }
-
-    .card34 {
-        flex-direction: column;
         width: 100%;
     }
 
@@ -361,8 +352,6 @@ button {
     }
 
     .card34 {
-        display: flex;
-        flex-direction: row;
         width: 100%;
     }
 
@@ -372,6 +361,31 @@ button {
     }
 }
 
+
+@media (max-width: 950px) {
+    .main {
+        margin-left: 0%;
+    }
+
+    .foot {
+        margin-left: 0%;
+        width: 100%;
+    }
+}
+@media (max-width: 1500px) {
+    .cards{
+        width: 105%;
+    }
+    .card345{
+        width: 95%;
+    }
+    .card34{
+        width: 95%;
+    }
+    .card5{
+        width: 95%;
+    }
+}
 @media (min-width: 1500px) {
     .navbar-custom {
         width: 20%;
@@ -381,5 +395,10 @@ button {
         margin-left: 20%;
         padding: 2%;
     }
+    .card345{
+        width: 110%;
+    }
 }
+
+
 

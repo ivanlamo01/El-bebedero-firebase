@@ -3,7 +3,6 @@ import Inventario from '../Pages/Inventario';
 import Login from '../Pages/Login';
 import NavBar from '../Components/NavBar';
 import DetalleProd from '../Pages/DetalleProd';
-import PagDeCompra from '../Pages/PagDeCompra';
 import Home from '../Pages/Home'
 import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
 import ProductosAlta from '../Pages/ProductosAlta';
@@ -36,7 +35,6 @@ function Public() {
                     <Route  path="/ingresar" element={<Login/>}/>
                     <Route  path="/detalle/:detalleId" element={<DetalleProd />}/>
                     <Route  path="/detalle/editar/:detalleId" element={<ProductosModificar />}/>
-                    <Route  path="/compra" element={<PagDeCompra/>}/>
                     <Route  path="/inventario/ProductosAlta" element={<ProductosAlta />}/>
                 </Routes>
             </div>

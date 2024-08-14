@@ -28,7 +28,7 @@ function Main() {
   const [alert, setAlert] = useState(null);
 
 
-  const tasksPerPage = 2;
+  const tasksPerPage = 3;
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {

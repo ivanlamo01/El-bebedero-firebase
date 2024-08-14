@@ -26,8 +26,8 @@ function Inventario() {
     return (
         <>
         <div style={style.cont} >
-            <div style={style.separador}>
-                <h1 style={style.h1}>INVENTARIO</h1>
+            <div  className="separadorA">
+                <span > INVENTARIO </span>
             </div>
             <Tabla/>
             </div>

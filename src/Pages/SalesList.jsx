@@ -11,21 +11,27 @@ const SalesList = () => {
     const fetchSales = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "sales"));
-        const salesList = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+        const salesList = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+            timestamp: data.timestamp ? data.timestamp.toDate() : null, // Convertir Firestore Timestamp a Date si existe
+            total: Number(data.total) || 0
+          };
+        });
 
         const groupedSales = salesList.reduce((acc, sale) => {
-          const date = sale.timestamp
-            ? new Date(sale.timestamp.seconds * 1000).toISOString().split("T")[0]
-            : "Fecha no disponible";
-          if (!acc[date]) {
-            acc[date] = { total: 0, count: 0, sales: [] };
+          if (sale.timestamp) {
+            // Convertir la fecha a formato de fecha sin hora (solo día)
+            const date = new Date(sale.timestamp).toLocaleDateString();
+            if (!acc[date]) {
+              acc[date] = { total: 0, count: 0, sales: [] };
+            }
+            acc[date].total += Number(sale.total) || 0;
+            acc[date].count += 1;
+            acc[date].sales.push(sale);
           }
-          acc[date].total += Number(sale.total) || 0;
-          acc[date].count += 1;
-          acc[date].sales.push(sale);
           return acc;
         }, {});
 
@@ -57,7 +63,12 @@ const SalesList = () => {
         const updatedSales = salesByDate.map((day) => {
           if (day.date === date) {
             const filteredSales = day.sales.filter((sale) => sale.id !== id);
-            return { ...day, sales: filteredSales, count: day.count - 1, total: day.total - Number(filteredSales.find(sale => sale.id === id)?.total || 0) };
+            return { 
+              ...day, 
+              sales: filteredSales, 
+              count: day.count - 1, 
+              total: filteredSales.reduce((total, sale) => total + Number(sale.total), 0).toFixed(2) 
+            };
           }
           return day;
         }).filter(day => day.sales.length > 0);
@@ -130,7 +141,7 @@ const SalesList = () => {
                     <td>{sale.paymentMethod || "Método de pago no disponible"}</td>
                     <td>
                       {sale.timestamp
-                        ? new Date(sale.timestamp.seconds * 1000).toLocaleString()
+                        ? sale.timestamp.toLocaleString()
                         : "Fecha no disponible"}
                     </td>
                     <td>
