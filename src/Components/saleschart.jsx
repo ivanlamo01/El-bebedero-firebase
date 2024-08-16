@@ -1,19 +1,25 @@
+
 import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
-import { collection, getDocs, getFirestore } from "firebase/firestore";
+import { collection, query, where, getDocs, getFirestore } from "firebase/firestore";
 
 const db = getFirestore();
 
 // Función para obtener los datos de ventas desde Firestore
-const fetchSalesData = async () => {
+const fetchSalesData = async (startDate, endDate) => {
     try {
-        const querySnapshot = await getDocs(collection(db, "sales"));
+        const salesQuery = query(
+            collection(db, "sales"),
+            where("timestamp", ">=", startDate),
+            where("timestamp", "<=", endDate)
+        );
+        const querySnapshot = await getDocs(salesQuery);
         const salesList = querySnapshot.docs.map((doc) => {
             const data = doc.data();
             return {
                 id: doc.id,
                 ...data,
-                timestamp: data.timestamp ? data.timestamp.toDate() : null, // Convertir Firestore Timestamp a Date si existe
+                timestamp: data.timestamp ? data.timestamp.toDate() : null,
                 total: Number(data.total) || 0
             };
         });
@@ -27,8 +33,8 @@ const fetchSalesData = async () => {
 // Función para obtener el inicio de la semana (lunes)
 function getStartOfWeek(date) {
     const d = new Date(date);
-    const day = d.getDay(); // 0 (Domingo) - 6 (Sábado)
-    const diff = d.getDate() - day + (day === 0 ? -6 : 1); // Ajuste si el día es domingo
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day === 0 ? -6 : 1);
     d.setDate(diff);
     d.setHours(0, 0, 0, 0);
     return d;
@@ -38,8 +44,8 @@ function getStartOfWeek(date) {
 function getEndOfWeek(date) {
     const startOfWeek = getStartOfWeek(date);
     const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6); // Domingo
-    endOfWeek.setHours(23, 59, 59, 999); // Fin del domingo
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+    endOfWeek.setHours(23, 59, 59, 999);
     return endOfWeek;
 }
 
@@ -51,42 +57,39 @@ const SalesChart = ({ setTotalWeeklySales, setTotalPreviousWeekSales }) => {
     useEffect(() => {
         const loadSalesData = async () => {
             try {
-                const salesList = await fetchSalesData();
-                console.log("Ventas obtenidas:", salesList);
-
                 const today = new Date();
-                const startOfCurrentWeek = getStartOfWeek(today); // Lunes actual
-                const endOfCurrentWeek = getEndOfWeek(today); // Domingo actual
+                const startOfCurrentWeek = getStartOfWeek(today);
+                const endOfCurrentWeek = getEndOfWeek(today);
 
                 const startOfPreviousWeek = new Date(startOfCurrentWeek);
                 startOfPreviousWeek.setDate(startOfCurrentWeek.getDate() - 7);
                 const endOfPreviousWeek = new Date(endOfCurrentWeek);
                 endOfPreviousWeek.setDate(endOfCurrentWeek.getDate() - 7);
 
-                // Inicializar arrays para las ventas
-                const currentWeekSales = Array(7).fill(0); // Lunes a domingo
+                // Realizar consultas específicas para cada semana
+                const [currentWeekSalesList, previousWeekSalesList] = await Promise.all([
+                    fetchSalesData(startOfCurrentWeek, endOfCurrentWeek),
+                    fetchSalesData(startOfPreviousWeek, endOfPreviousWeek)
+                ]);
+
+                const currentWeekSales = Array(7).fill(0);
                 const previousWeekSales = Array(7).fill(0);
 
-                salesList.forEach(sale => {
-                    if (!sale.timestamp) {
-                        // Omitir si no hay timestamp
-                        console.warn(`Venta sin timestamp: ${sale.id}`);
-                        return;
-                    }
-                    const saleDate = sale.timestamp; // Ya es un objeto Date
-                    saleDate.setHours(0, 0, 0, 0); // Normalizar hora
-
-                    if (saleDate >= startOfCurrentWeek && saleDate <= endOfCurrentWeek) {
-                        const dayIndex = (saleDate.getDay() + 6) % 7; // Ajustar para que lunes=0
-                        currentWeekSales[dayIndex] += Number(sale.total);
-                    } else if (saleDate >= startOfPreviousWeek && saleDate <= endOfPreviousWeek) {
-                        const dayIndex = (saleDate.getDay() + 6) % 7; // Lunes=0
-                        previousWeekSales[dayIndex] += Number(sale.total);
-                    }
+                // Procesar ventas de la semana actual
+                currentWeekSalesList.forEach(sale => {
+                    const saleDate = sale.timestamp;
+                    saleDate.setHours(0, 0, 0, 0);
+                    const dayIndex = (saleDate.getDay() + 6) % 7; // Lunes=0
+                    currentWeekSales[dayIndex] += Number(sale.total);
                 });
 
-                console.log("Ventas de la semana actual por día:", currentWeekSales);
-                console.log("Ventas de la semana anterior por día:", previousWeekSales);
+                // Procesar ventas de la semana anterior
+                previousWeekSalesList.forEach(sale => {
+                    const saleDate = sale.timestamp;
+                    saleDate.setHours(0, 0, 0, 0);
+                    const dayIndex = (saleDate.getDay() + 6) % 7;
+                    previousWeekSales[dayIndex] += Number(sale.total);
+                });
 
                 const totalCurrentWeekSales = currentWeekSales.reduce((a, b) => a + b, 0);
                 const totalPreviousWeekSales = previousWeekSales.reduce((a, b) => a + b, 0);
