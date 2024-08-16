@@ -45,7 +45,7 @@ function Producto({id,title,price,Barcode,category,stock}) {
                                 <td style={style.itemtabla5}>
                                     {login&&(
                                     <>
-                                        <button onClick={handleClick} className="edit-button" >Editar</button>
+                                        <button onClick={handleClick} className="save-button" >Editar</button>
                                     </>
                                     )}
                                 </td>

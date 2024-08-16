@@ -116,8 +116,8 @@ function ProductosAlta() {
                 <div>
                     <span>This field is required</span>
                 </div>)}
-              <Button variant="primary" type="submit" >Guardar</Button>
-              <Button variant="danger" type="submit" onClick={handleDelete} >Eliminar</Button>
+              <button className="save-button" type="submit" >Guardar</button>
+              <button className="cancel-button" type="submit" onClick={handleDelete} >Eliminar</button>
         </Form>
         </Container>
     </div>

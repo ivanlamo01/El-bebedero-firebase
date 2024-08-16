@@ -45,7 +45,8 @@
     width: 100%;
 }
 
-.details-btn{
-    border-radius: 5px;
-    background-color:#FFAE00
+.date-time-range{
+    display: flex;
+    flex-direction: column;
+    width: 30%;
 }
