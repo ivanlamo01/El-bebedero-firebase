@@ -2,46 +2,55 @@ import React, { useEffect, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { fetchSalesData, fetchExpensesData } from '../Services/productosServices';
 
-const processData = (data) => {
+const processData = (sales, expenses) => {
     const aggregatedData = {};
-    data.forEach((item) => {
-        if (!aggregatedData[item.date]) {
-            aggregatedData[item.date] = 0;
-        }
-        aggregatedData[item.date] += item.total;
-    });
-    return Object.entries(aggregatedData).map(([date, total]) => ({
+
+    const aggregate = (data, type) => {
+        data.forEach(item => {
+            if (!aggregatedData[item.date]) {
+                aggregatedData[item.date] = { sales: 0, expenses: 0 };
+            }
+            aggregatedData[item.date][type] += item.total;
+        });
+    };
+
+    aggregate(sales, 'sales');
+    aggregate(expenses, 'expenses');
+
+    return Object.entries(aggregatedData).map(([date, totals]) => ({
         date,
-        total,
+        sales: totals.sales,
+        expenses: totals.expenses,
     })).sort((a, b) => new Date(a.date) - new Date(b.date));
 };
 
 const SalesChartProfit = () => {
-    const [salesData, setSalesData] = useState([]);
-    const [expensesData, setExpensesData] = useState([]);
+    const [data, setData] = useState({ sales: [], expenses: [] });
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadData = async () => {
-            const sales = await fetchSalesData();
-            const expenses = await fetchExpensesData();
-
-            setSalesData(processData(sales));
-            setExpensesData(processData(expenses));
+            try {
+                const [sales, expenses] = await Promise.all([fetchSalesData(), fetchExpensesData()]);
+                const processedData = processData(sales, expenses);
+                setData({
+                    sales: processedData.map(item => item.sales),
+                    expenses: processedData.map(item => item.expenses),
+                    dates: processedData.map(item => item.date),
+                });
+            } catch (error) {
+                console.error('Error al cargar los datos:', error);
+            } finally {
+                setLoading(false);
+            }
         };
 
         loadData();
     }, []);
 
-    const allDates = Array.from(new Set([
-        ...salesData.map(item => item.date),
-        ...expensesData.map(item => item.date),
-    ])).sort((a, b) => new Date(a) - new Date(b));
-
-    const salesDataMap = new Map(salesData.map(item => [item.date, item.total]));
-    const expensesDataMap = new Map(expensesData.map(item => [item.date, item.total]));
-
-    const salesDataArray = allDates.map(date => salesDataMap.get(date) || 0);
-    const expensesDataArray = allDates.map(date => expensesDataMap.get(date) || 0);
+    if (loading) {
+        return <div>Cargando datos...</div>;
+    }
 
     const option = {
         responsive: true,
@@ -49,14 +58,14 @@ const SalesChartProfit = () => {
         tooltip: { trigger: 'axis' },
         xAxis: {
             type: 'category',
-            data: allDates,
+            data: data.dates,
             name: 'Fecha',
         },
         yAxis: {
             type: 'value',
             name: 'Monto',
             axisLabel: {
-                formatter: (value) => (value >= 1000 ? (value / 1000) + 'K' : value)
+                formatter: value => (value >= 1000 ? (value / 1000) + 'K' : value),
             },
         },
         dataZoom: [
@@ -70,29 +79,21 @@ const SalesChartProfit = () => {
             {
                 name: 'Ventas',
                 type: 'line',
-                data: salesDataArray,
+                data: data.sales,
                 smooth: true,
-                itemStyle: {
-                    color: 'green',
-                },
+                itemStyle: { color: 'green' },
             },
             {
                 name: 'Gastos',
                 type: 'line',
-                data: expensesDataArray,
+                data: data.expenses,
                 smooth: true,
-                itemStyle: {
-                    color: 'red',
-                },
+                itemStyle: { color: 'red' },
             },
         ],
     };
 
-    return (
-        <div>
-            <ReactECharts option={option} />
-        </div>
-    );
+    return <ReactECharts option={option} />;
 };
 
 export default SalesChartProfit;
