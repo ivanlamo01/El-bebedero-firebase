@@ -121,7 +121,7 @@ export const updateProductStock = async (id, newStock) => {
 export const addSale = async (sale) => {
     try {
         const docRef = await addDoc(collection(db, 'sales'), sale);
-        console.log('Venta agregada con ID: ', docRef.id);
+
     } catch (e) {
         console.error('Error agregando la venta: ', e);
     }

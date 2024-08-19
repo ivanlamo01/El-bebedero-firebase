@@ -58,7 +58,6 @@ function Login() {
             const responseUser = await firebase
                 .auth()
                 .signInWithEmailAndPassword(data.email,data.password);
-            console.log(responseUser);
             if (responseUser.user.uid){
                 const User = await getByUserId(responseUser.user.uid) ; 
                 handleLogin(User.docs[0].data());
