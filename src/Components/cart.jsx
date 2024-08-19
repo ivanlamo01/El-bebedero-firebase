@@ -261,8 +261,8 @@ function Cart() {
         </div>
       </div>
       {showModal && (
-        <div className="modal" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 }}>
-          <div className="modal-content" style={{ backgroundColor: 'white', padding: '20px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', width: '300px', textAlign: 'center' }}>
+        <div className="modal-overlay" >
+          <div className="edit-modal">
             <h2>Seleccionar Medio de Pago</h2>
             <select 
               onChange={(e) => {
@@ -271,6 +271,7 @@ function Cart() {
               }} 
               value={paymentMethod} 
               required
+              
             >
               <option value="">Seleccionar</option>
               <option value="Deuda">Deuda</option>
@@ -291,11 +292,11 @@ function Cart() {
                 {!debtorName && <p style={{ color: 'red' }}>El nombre del deudor es obligatorio.</p>}
               </>
             )}
-            <button onClick={confirmPurchase} className="cart-button confirm-button">
+            <button onClick={confirmPurchase} className="save-button">
               {loading && <Spinner animation="border" size="sm"/>}
               Confirmar
             </button>
-            <button onClick={() => setShowModal(false)} className="cart-button clear-button">Cancelar</button>
+            <button onClick={() => setShowModal(false)} className="cancel-button">Cancelar</button>
           </div>
         </div>
       )}

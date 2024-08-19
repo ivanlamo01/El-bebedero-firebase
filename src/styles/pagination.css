@@ -8,13 +8,3 @@
     margin: 0 5px;
   }
   
-  .page-link {
-    cursor: pointer;
-    color: #007bff;
-    text-decoration: none;
-  }
-  
-  .page-link:hover {
-    color: #0056b3;
-  }
-  

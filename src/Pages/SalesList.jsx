@@ -7,9 +7,12 @@ const db = getFirestore();
 
 const SalesList = () => {
   const [salesByDate, setSalesByDate] = useState([]);
+  const [filteredSales, setFilteredSales] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [currentDetailsPage, setCurrentDetailsPage] = useState({});
   const [detailsVisible, setDetailsVisible] = useState({});
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const salesPerPage = 5; // Número de días por página
   const detailsPerPage = 5; // Número de detalles por página
@@ -30,7 +33,7 @@ const SalesList = () => {
 
         const groupedSales = salesList.reduce((acc, sale) => {
           if (sale.timestamp) {
-            const date = new Date(sale.timestamp).toLocaleDateString();
+            const date = sale.timestamp.toLocaleDateString(); // Mantener como cadena para la clave del objeto
             if (!acc[date]) {
               acc[date] = { total: 0, count: 0, sales: [] };
             }
@@ -48,9 +51,11 @@ const SalesList = () => {
           sales: data.sales,
         }));
 
-        salesArray.sort((a, b) => new Date(b.date) - new Date(a.date));
+        // Ordenar por fecha en orden descendente (convertir a objetos Date para la comparación)
+        salesArray.sort((a, b) => new Date(b.date.split("/").reverse().join("-")) - new Date(a.date.split("/").reverse().join("-")));
 
         setSalesByDate(salesArray);
+        setFilteredSales(salesArray);
       } catch (error) {
         console.error("Error al obtener las ventas: ", error);
       }
@@ -58,6 +63,22 @@ const SalesList = () => {
 
     fetchSales();
   }, []);
+
+  useEffect(() => {
+    const filterSalesByDate = () => {
+      if (startDate && endDate) {
+        const filtered = salesByDate.filter((sale) => {
+          const saleDate = new Date(sale.date.split("/").reverse().join("-"));
+          return saleDate >= new Date(startDate) && saleDate <= new Date(endDate);
+        });
+        setFilteredSales(filtered);
+      } else {
+        setFilteredSales(salesByDate);
+      }
+    };
+
+    filterSalesByDate();
+  }, [startDate, endDate, salesByDate]);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
@@ -73,7 +94,7 @@ const SalesList = () => {
     if (confirmDelete) {
       try {
         await deleteDoc(doc(db, "sales", id));
-        const updatedSales = salesByDate.map((day) => {
+        const updatedSales = filteredSales.map((day) => {
           if (day.date === date) {
             const filteredSales = day.sales.filter((sale) => sale.id !== id);
             return {
@@ -85,7 +106,7 @@ const SalesList = () => {
           }
           return day;
         }).filter((day) => day.sales.length > 0);
-        setSalesByDate(updatedSales);
+        setFilteredSales(updatedSales);
       } catch (error) {
         console.error("Error al eliminar la venta: ", error);
       }
@@ -102,7 +123,7 @@ const SalesList = () => {
   // Obtener las ventas actuales basadas en la paginación
   const indexOfLastSale = currentPage * salesPerPage;
   const indexOfFirstSale = indexOfLastSale - salesPerPage;
-  const currentSales = salesByDate.slice(indexOfFirstSale, indexOfLastSale);
+  const currentSales = filteredSales.slice(indexOfFirstSale, indexOfLastSale);
 
   return (
     <div className="sales-list">
@@ -110,9 +131,27 @@ const SalesList = () => {
         <h1>VENTAS POR DÍA</h1>
       </div>
 
+      {/* Filtros de fecha */}
+      <div className="date-filter">
+        <label htmlFor="startDate">Fecha Inicial:</label>
+        <input
+          type="date"
+          id="startDate"
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
+        <label htmlFor="endDate">Fecha Final:</label>
+        <input
+          type="date"
+          id="endDate"
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+      </div>
+
       {/* Tabla de ventas diarias */}
       {currentSales.length === 0 ? (
-        <p>No hay ventas disponibles</p>
+        <p>No hay ventas disponibles para el período seleccionado</p>
       ) : (
         currentSales.map(({ date, total, count, sales }) => {
           const currentPageDetails = currentDetailsPage[date] || 1;
@@ -208,10 +247,10 @@ const SalesList = () => {
       )}
 
       {/* Componente de paginación para las ventas diarias */}
-      {salesByDate.length > salesPerPage && (
+      {filteredSales.length > salesPerPage && (
         <Pagination
           productsPerPage={salesPerPage}
-          totalProducts={salesByDate.length}
+          totalProducts={filteredSales.length}
           currentPage={currentPage}
           paginate={paginate}
         />
