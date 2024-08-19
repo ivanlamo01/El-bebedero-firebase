@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../Context/AuthContext";
 
@@ -34,22 +34,21 @@ function Producto({id,title,price,Barcode,category,stock}) {
     const handleClick=()=>navigate(`/detalle/editar/${id}`)
 
     return (
-        
         <> 
-                            <tr style={stock <= 0 ? style.deshabilitado : style.tr}>
-                                <td style={style.itemtabla1} className="barcodeTabla">{Barcode}</td>
-                                <td style={style.itemtabla2}>{title}</td>
-                                <td style={style.itemtabla3}>{price}</td>
-                                <td style={style.itemtabla3}>{category}</td>
-                                <td style={style.itemtabla5}>{stock}</td>
-                                <td style={style.itemtabla5}>
-                                    {login&&(
-                                    <>
-                                        <button onClick={handleClick} className="save-button" >Editar</button>
-                                    </>
-                                    )}
-                                </td>
-                            </tr>
+            <tr style={stock <= 0 ? style.deshabilitado : style.tr}>
+                <td style={style.itemtabla1} className="barcodeTabla">{Barcode}</td>
+                <td style={style.itemtabla2}>{title}</td>
+                <td style={style.itemtabla3}>{price}</td>
+                <td style={style.itemtabla3}>{category}</td>
+                <td style={style.itemtabla5}>{stock}</td>
+                <td style={style.itemtabla5}>
+                    {login&&(
+                    <>
+                        <button onClick={handleClick} className="save-button" >Editar</button>
+                    </>
+                    )}
+                </td>
+            </tr>
         </>
         );
     }
