@@ -1,4 +1,4 @@
-import  Button from "react-bootstrap/Button"
+
 import  Form from "react-bootstrap/Form"
 import { useForm } from "react-hook-form"
 import Input from "../Components/Input";
@@ -61,7 +61,6 @@ function ProductosAlta() {
   }, [detalleId, setValue])
 
   const onSubmit = async (data) =>{
-    console.log(data);
     try {
       const document =  update(detalleId,data)
       if (document) {

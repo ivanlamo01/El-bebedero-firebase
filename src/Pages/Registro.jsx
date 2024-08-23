@@ -46,12 +46,11 @@ function Registro() {
 
   const onSubmit = async (data) =>{
     setLoading(true)
-    console.log(data);
     try {
       const responseUser = await firebase
         .auth()
         .createUserWithEmailAndPassword(data.email, data.password);
-        console.log(responseUser);
+
         if(responseUser.user.uid){
           const document = firebase.firestore().collection("Usuarios")
           .add({
@@ -59,7 +58,7 @@ function Registro() {
             apellido:data.apellido,
             userId:responseUser.user.uid,
             email:data.email
-            });console.log(document);
+            })
           if (document){
             setAlert({variant:"success", text: "¡Registro Exitoso!",duration: 3000, link:"/ingresar"});
             setLoading(false)

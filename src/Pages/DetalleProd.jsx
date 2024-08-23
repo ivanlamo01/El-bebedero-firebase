@@ -48,7 +48,6 @@ function DetalleProd() {
             try{
                 const response = await getById(detalleId)
                     setProducto(response.data())
-                    console.log(response);
                     setLoading(false)
             }catch(e){
                 console.log(e);

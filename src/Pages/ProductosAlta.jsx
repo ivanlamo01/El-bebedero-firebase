@@ -43,7 +43,6 @@ function ProductosAlta() {
   const timest = new Date();
 
   const onSubmit = async (data) => {
-    console.log(data);
     setLoading(true);
     try {
       const document = await create({ ...data, dateAdded: Timestamp.fromDate(timest) });
