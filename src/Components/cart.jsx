@@ -5,7 +5,7 @@ import React from 'react';
 import '../styles/cart.css';
 import { Spinner } from "react-bootstrap";
 import { collection, addDoc, getFirestore } from "firebase/firestore";
-import { sellPromotion } from '../Services/productosServices';
+
 
 const db = getFirestore();
 
@@ -89,89 +89,97 @@ function Cart() {
       setAlert({ variant: "", text: "" });
     }, 3000); // La alerta desaparecerá después de 3 segundos
   };
-
   const confirmPurchase = async () => {
     if (!paymentMethod) {
-        setPaymentError(true);
-        return;
+      setPaymentError(true);
+      return;
     }
 
     if (paymentMethod === 'Deuda' && !debtorName) {
-        showAlert('danger', 'Por favor, ingrese el nombre del deudor.');
-        return;
+      showAlert('danger', 'Por favor, ingrese el nombre del deudor.');
+      return;
     }
 
     try {
-        setLoading(true);
+      setLoading(true);
 
-        for (const item of cart) {
-            if (item && item.data && item.data.Barcode) {
-                const productOrPromotion = await getProductByBarcode(item.data.Barcode);
-                
-                if (productOrPromotion) {
-                    if (productOrPromotion.type === 'product') {
-                        const newStock = productOrPromotion.data.stock - item.quantity;
-                        if (newStock >= 0) {
-                            await updateProductStock(productOrPromotion.id, newStock);
-                        } else {
-                            showAlert('danger', `No hay suficiente stock para ${productOrPromotion.data.title}`);
-                            setLoading(false);
-                            return;
-                        }
-                    } else if (productOrPromotion.type === 'promotion') {
-                        try {
-                            await sellPromotion(productOrPromotion.id, item.quantity);
-                        } catch (error) {
-                            showAlert('danger', error.message);
-                            setLoading(false);
-                            return;
-                        }
-                    }
+      for (const item of cart) {
+        if (item && item.data && item.data.Barcode) {
+          const productOrPromotion = await getProductByBarcode(item.data.Barcode);
+
+          if (productOrPromotion) {
+            if (productOrPromotion.data.ispromo) {
+              // Si es una promoción, actualizar el stock de los productos que la componen
+              const promotionProducts = productOrPromotion.data.products;
+              for (const promoProduct of promotionProducts) {
+                const productInPromo = await getProductByBarcode(promoProduct.barcode);
+                const newStock = productInPromo.data.stock - (promoProduct.quantity * item.quantity);
+                if (newStock >= 0) {
+                  await updateProductStock(productInPromo.id, newStock);
                 } else {
-                    console.error('Producto o promoción inválido en el carrito:', item);
+                  showAlert('danger', `No hay suficiente stock para ${productInPromo.data.title}`);
+                  setLoading(false);
+                  return;
                 }
+              }
+            } else {
+              // Si es un producto regular, reducir su stock normalmente
+              const newStock = productOrPromotion.data.stock - item.quantity;
+              if (newStock >= 0) {
+                await updateProductStock(productOrPromotion.id, newStock);
+                
+              } else {
+                showAlert('danger', `No hay suficiente stock para ${productOrPromotion.data.title}`);
+                setLoading(false);
+                return;
+              }
             }
+          } else {
+            console.error('Producto o promoción inválido en el carrito:', item);
+          }
         }
+      }
 
-        const sale = {
-            total: total,
-            products: cart.map(item => ({
-                title: item.data.title,
-                description: item.customDescription || '', // Incluimos la descripción aquí
-                price: item.customPrice,
-                quantity: item.quantity
-            })),
-            paymentMethod: paymentMethod,
-            timestamp: new Date()
+      // Guardar la venta en Firestore
+      const sale = {
+        total: total,
+        products: cart.map(item => ({
+          title: item.data.title,
+          description: item.customDescription || '',
+          price: item.customPrice,
+          quantity: item.quantity
+        })),
+        paymentMethod: paymentMethod,
+        timestamp: new Date()
+      };
+      await addDoc(collection(db, "sales"), sale);
+
+      if (paymentMethod === 'Deuda') {
+        const debt = {
+          name: debtorName,
+          amount: total,
+          timestamp: new Date(),
+          products: cart.map(item => ({
+            name: item.data.title,
+            description: item.customDescription || '',
+            price: item.customPrice,
+            quantity: item.quantity
+          }))
         };
-        await addDoc(collection(db, "sales"), sale);
+        await addDoc(collection(db, "debts"), debt);
+      }
 
-        if (paymentMethod === 'Deuda') {
-            const debt = {
-                name: debtorName,
-                amount: total,
-                timestamp: new Date(),
-                products: cart.map(item => ({
-                    name: item.data.title,
-                    description: item.customDescription || '', // Incluimos la descripción aquí también
-                    price: item.customPrice,
-                    quantity: item.quantity
-                }))
-            };
-            await addDoc(collection(db, "debts"), debt);
-        }
-
-        clearCart();
-        showAlert('success', 'Compra confirmada y stock actualizado');
+      clearCart();
+      showAlert('success', 'Compra confirmada y stock actualizado');
     } catch (error) {
-        console.error('Error al confirmar la compra:', error);
-        showAlert('danger', 'Error al confirmar la compra. Por favor, inténtelo de nuevo.');
+      console.error('Error al confirmar la compra:', error);
+      showAlert('danger', 'Error al confirmar la compra. Por favor, inténtelo de nuevo.');
     } finally {
-        setLoading(false);
-        setShowModal(false);
-        inputRef.current.focus();
+      setLoading(false);
+      setShowModal(false);
+      inputRef.current.focus();
     }
-};
+  };
 
 
   const calculateTotal = useCallback(() => {

@@ -84,6 +84,25 @@ const DebtorsList = () => {
         }
     };
 
+    const handleDeleteDebt = async (debtId, debtorName) => {
+        try {
+            await deleteDoc(doc(db, 'debts', debtId));
+
+            const updatedDebtors = debtors.map(d => {
+                if (d.name === debtorName) {
+                    const updatedDebts = d.debts.filter(debt => debt.id !== debtId);
+                    const updatedTotalAmount = updatedDebts.reduce((total, debt) => total + debt.amount, 0);
+                    return { ...d, debts: updatedDebts, totalAmount: updatedTotalAmount };
+                }
+                return d;
+            });
+
+            setDebtors(updatedDebtors);
+        } catch (error) {
+            console.error("Error al eliminar la deuda: ", error);
+        }
+    };
+
     const toggleDetails = (name) => {
         setExpandedDebtor(expandedDebtor === name ? null : name);
     };
@@ -136,6 +155,7 @@ const DebtorsList = () => {
                                                             ))}
                                                         </ul>
                                                     </div>
+                                                    <button onClick={() => handleDeleteDebt(debt.id, debtor.name)} className="delete-button">Eliminar Deuda</button>
                                                 </li>
                                             ))}
                                         </ul>

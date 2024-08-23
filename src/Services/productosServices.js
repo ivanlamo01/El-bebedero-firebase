@@ -1,4 +1,4 @@
-import { getFirestore, collection, query, where, getDocs, doc, updateDoc, addDoc,getDoc } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, doc, updateDoc, addDoc } from "firebase/firestore";
 import firebase from "../config/firebase";
 
 const db = getFirestore();
@@ -64,13 +64,11 @@ export async function create(data) {
 export async function update(id, data) {
     const titleNormalized = data.title ? data.title.toLowerCase().replace(/\s+/g, '') : undefined;
     const categoryNormalized = data.category ? data.category.toLowerCase().replace(/\s+/g, '') : undefined;
-
     const dataWithNormalizedFields = {
         ...data,
         title_normalized: titleNormalized,
         category_normalized: categoryNormalized,
     };
-
     try {
         return await firebase.firestore().doc(`Productos/${id}`).set(dataWithNormalizedFields, { merge: true });
     } catch (error) {
@@ -198,37 +196,5 @@ export const fetchExpensesData = async () => {
         date: new Date(doc.data().date).toISOString().split('T')[0],
         total: parseFloat(doc.data().amount) || 0,
     })).filter(expense => expense.date !== null);
-};
-
-export const sellPromotion = async (promotionId, quantitySold) => {
-    try {
-        // Obtener la promoción desde la base de datos
-        const promotionRef = firebase.firestore().collection('promociones').doc(promotionId);
-        const promotionDoc = await promotionRef.get();
-        if (!promotionDoc.exists) {
-            throw new Error('La promoción no existe');
-        }
-        const promotionData = promotionDoc.data();
-        // Recorrer los productos en la promoción para restar stock
-        for (const product of promotionData.products) {
-            const productRef = doc(db, "Productos", product.id);
-            const productDoc = await getDoc(productRef);
-            if (!productDoc.exists()) {
-                throw new Error(`El producto con ID ${product.id} no existe`);
-            }
-            const productData = productDoc.data();
-            const newStock = productData.stock - (product.quantity * quantitySold);
-            // Asegurarse de que el stock no sea negativo
-            if (newStock < 0) {
-                throw new Error(`Stock insuficiente para el producto ${productData.title}`);
-            }
-            // Actualizar el stock del producto utilizando la función `updateProductStock`
-            await updateProductStock(product.id, newStock);
-        }
-        // Opcional: Registrar la venta de la promoción
-    } catch (error) {
-        console.error('Error al realizar la venta de la promoción:', error);
-        throw error;
-    }
 };
 

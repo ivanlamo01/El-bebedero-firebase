@@ -33,6 +33,13 @@ const style = {
     boxShadow: "0 4px 8px black",
     padding: "20px",
     color: "white"
+  },
+  form:{
+    display:"flex",
+    
+  },
+  boton:{
+    height:"10%"
   }
 };
 
@@ -40,6 +47,7 @@ function ProductosAlta() {
   const { register, handleSubmit, formState: { errors } } = useForm({ mode: "onChange" });
   const [alert, setAlert] = useState({ variant: "", text: "" });
   const [loading, setLoading] = useState(false);
+  const [showPromo, setShowPromo] = useState(false);
   const timest = new Date();
 
   const onSubmit = async (data) => {
@@ -63,18 +71,24 @@ function ProductosAlta() {
       <div style={style.separador}>
         <h1 style={style.h1}>AGREGAR PRODUCTO</h1>
       </div>
-      <CrearPromocion/>
+      <div style={style.form}>
+      <button onClick={() => setShowPromo(!showPromo)} className="save-button" style={style.boton}>
+        {showPromo ? "Cerrar Promoción" : "Agregar Promoción"}
+      </button>
+      
+      {showPromo && <CrearPromocion />}
+      
       <Container style={style.container}>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <Input label="Precio" register={{ ...register("price", { required: true }) }} />
+          <Input label="Precio" register={{ ...register("price", { required: true }) }} className="input"/>
           {errors.price && <div><span>This field is required</span></div>}
           <Input label="Titulo" register={{ ...register("title", { required: true }) }} className="input" />
           {errors.title && <div><span>This field is required</span></div>}
-          <Input label="Categoria" register={{ ...register("category", { required: true }) }} />
+          <Input label="Categoria" register={{ ...register("category", { required: true }) }} className="input"/>
           {errors.category && <div><span>This field is required</span></div>}
           <Input label="Codigo de barras" type="number" register={{ ...register("Barcode", { required: true }) }} />
           {errors.Barcode && <div><span>This field is required</span></div>}
-          <Input label="Stock" register={{ ...register("stock", { required: true }) }} />
+          <Input label="Stock" register={{ ...register("stock", { required: true }) }}className="input" />
           {errors.stock && <div><span>This field is required</span></div>}
 
           <button type="submit" className="boton">
@@ -83,6 +97,8 @@ function ProductosAlta() {
           {alert && <Check {...alert} />}
         </Form>
       </Container>
+      </div>
+      
     </div>
   );
 }

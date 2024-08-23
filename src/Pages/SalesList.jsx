@@ -126,10 +126,12 @@ const SalesList = () => {
   const currentSales = filteredSales.slice(indexOfFirstSale, indexOfLastSale);
 
   return (
+    <>
+    <div className="separado">
+    <h1>VENTAS POR DÍA</h1>
+  </div>
     <div className="sales-list">
-      <div className="separado">
-        <h1>VENTAS POR DÍA</h1>
-      </div>
+
 
       {/* Filtros de fecha */}
       <div className="date-filter">
@@ -139,6 +141,8 @@ const SalesList = () => {
           id="startDate"
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
+          className="input"
+          style={{width:"15%"}}
         />
         <label htmlFor="endDate">Fecha Final:</label>
         <input
@@ -146,6 +150,8 @@ const SalesList = () => {
           id="endDate"
           value={endDate}
           onChange={(e) => setEndDate(e.target.value)}
+          className="input"
+          style={{width:"15%"}}
         />
       </div>
 
@@ -256,6 +262,7 @@ const SalesList = () => {
         />
       )}
     </div>
+    </>
   );
 };
 

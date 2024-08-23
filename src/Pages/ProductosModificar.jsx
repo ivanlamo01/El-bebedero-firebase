@@ -75,7 +75,7 @@ function ProductosAlta() {
     try {
       const document = remove(detalleId)
       if (document) {
-        navigate('/')
+        navigate('/inventario')
       }
     } catch (e) {
       console.log(e);
