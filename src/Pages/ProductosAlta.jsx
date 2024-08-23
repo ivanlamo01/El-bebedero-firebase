@@ -8,6 +8,7 @@ import Check from '../Components/Check';
 import { Spinner } from "react-bootstrap";
 import "../styles/prodAlta.css";
 import { Timestamp } from "firebase/firestore";
+import CrearPromocion from "../Components/crearPromo";
 
 const style = {
   separador: {
@@ -63,6 +64,7 @@ function ProductosAlta() {
       <div style={style.separador}>
         <h1 style={style.h1}>AGREGAR PRODUCTO</h1>
       </div>
+      <CrearPromocion/>
       <Container style={style.container}>
         <Form onSubmit={handleSubmit(onSubmit)}>
           <Input label="Precio" register={{ ...register("price", { required: true }) }} />

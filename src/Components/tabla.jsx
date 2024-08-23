@@ -5,6 +5,7 @@ import Loading from "./Loading/Loading";
 import "../styles/tabla.css";
 import Pagination from "./Pagination";
 
+
 function Tabla() {
   const [buscar, setBuscar] = useState("");
   const [categoria, setCategoria] = useState("");
@@ -134,6 +135,7 @@ return (
             </div>
           )}
         </form>
+        
     </div>
     <table className="tabla">
       <thead className="tr">

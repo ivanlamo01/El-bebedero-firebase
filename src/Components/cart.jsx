@@ -1,10 +1,11 @@
 import { useCart } from "../Context/CartContext";
 import { getProductByBarcode, getProductByTitle, updateProductStock } from "../Services/productosServices";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback,useRef } from "react";
 import React from 'react';
 import '../styles/cart.css';
 import { Spinner } from "react-bootstrap";
 import { collection, addDoc, getFirestore } from "firebase/firestore";
+import { sellPromotion } from '../Services/productosServices';
 
 const db = getFirestore();
 
@@ -19,6 +20,7 @@ function Cart() {
   const [loading, setLoading] = useState(false);
   const [alert, setAlert] = useState({ variant: "", text: "" });
   const [paymentError, setPaymentError] = useState(false); // Nuevo estado para el error
+  const inputRef = useRef(null);
 
   const handleSearchByBarcode = async (event) => {
     event.preventDefault();
@@ -90,73 +92,87 @@ function Cart() {
 
   const confirmPurchase = async () => {
     if (!paymentMethod) {
-      setPaymentError(true);
-      return;
+        setPaymentError(true);
+        return;
     }
 
     if (paymentMethod === 'Deuda' && !debtorName) {
-      showAlert('danger', 'Por favor, ingrese el nombre del deudor.');
-      return;
+        showAlert('danger', 'Por favor, ingrese el nombre del deudor.');
+        return;
     }
 
     try {
-      setLoading(true);
-      for (const item of cart) {
-        if (item && item.data && item.data.Barcode) {
-          const product = await getProductByBarcode(item.data.Barcode);
-          if (product) {
-            const newStock = product.data.stock - item.quantity;
-            if (newStock >= 0) {
-              await updateProductStock(product.id, newStock);
-            } else {
-              showAlert('danger', `No hay suficiente stock para ${product.data.title}`);
-              setLoading(false);
-              return;
+        setLoading(true);
+
+        for (const item of cart) {
+            if (item && item.data && item.data.Barcode) {
+                const productOrPromotion = await getProductByBarcode(item.data.Barcode);
+                
+                if (productOrPromotion) {
+                    if (productOrPromotion.type === 'product') {
+                        const newStock = productOrPromotion.data.stock - item.quantity;
+                        if (newStock >= 0) {
+                            await updateProductStock(productOrPromotion.id, newStock);
+                        } else {
+                            showAlert('danger', `No hay suficiente stock para ${productOrPromotion.data.title}`);
+                            setLoading(false);
+                            return;
+                        }
+                    } else if (productOrPromotion.type === 'promotion') {
+                        try {
+                            await sellPromotion(productOrPromotion.id, item.quantity);
+                        } catch (error) {
+                            showAlert('danger', error.message);
+                            setLoading(false);
+                            return;
+                        }
+                    }
+                } else {
+                    console.error('Producto o promoción inválido en el carrito:', item);
+                }
             }
-          }
-        } else {
-          console.error('Producto inválido en el carrito:', item);
         }
-      }
 
-      const sale = {
-        total: total,
-        products: cart.map(item => ({
-          title: item.data.title,
-          description: item.customDescription || '', // Incluimos la descripción aquí
-          price: item.customPrice,
-          quantity: item.quantity
-        })),
-        paymentMethod: paymentMethod,
-        timestamp: new Date()
-      };
-      await addDoc(collection(db, "sales"), sale);
-
-      if (paymentMethod === 'Deuda') {
-        const debt = {
-          name: debtorName,
-          amount: total,
-          timestamp: new Date(),
-          products: cart.map(item => ({
-            name: item.data.title,
-            description: item.customDescription || '', // Incluimos la descripción aquí también
-            price: item.customPrice,
-            quantity: item.quantity
-          }))
+        const sale = {
+            total: total,
+            products: cart.map(item => ({
+                title: item.data.title,
+                description: item.customDescription || '', // Incluimos la descripción aquí
+                price: item.customPrice,
+                quantity: item.quantity
+            })),
+            paymentMethod: paymentMethod,
+            timestamp: new Date()
         };
-        await addDoc(collection(db, "debts"), debt);
-      }
+        await addDoc(collection(db, "sales"), sale);
 
-      clearCart();
-      showAlert('success', 'Compra confirmada y stock actualizado');
+        if (paymentMethod === 'Deuda') {
+            const debt = {
+                name: debtorName,
+                amount: total,
+                timestamp: new Date(),
+                products: cart.map(item => ({
+                    name: item.data.title,
+                    description: item.customDescription || '', // Incluimos la descripción aquí también
+                    price: item.customPrice,
+                    quantity: item.quantity
+                }))
+            };
+            await addDoc(collection(db, "debts"), debt);
+        }
+
+        clearCart();
+        showAlert('success', 'Compra confirmada y stock actualizado');
     } catch (error) {
-      console.error('Error al confirmar la compra:', error);
-      showAlert('danger', 'Error al confirmar la compra. Por favor, inténtelo de nuevo.');
+        console.error('Error al confirmar la compra:', error);
+        showAlert('danger', 'Error al confirmar la compra. Por favor, inténtelo de nuevo.');
     } finally {
-      setLoading(false);
-      setShowModal(false);
+        setLoading(false);
+        setShowModal(false);
+        inputRef.current.focus();
     }
-  };
+};
+
 
   const calculateTotal = useCallback(() => {
     const total = cart.reduce((acc, item) => acc + (parseFloat(item.customPrice) || 0) * item.quantity, 0);
@@ -166,7 +182,12 @@ function Cart() {
   useEffect(() => {
     calculateTotal();
   }, [cart, calculateTotal]);
-
+  useEffect(() => {
+    // Enfoca el input al cargar el componente
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
   return (
     <>
       <div className="sep"></div>
@@ -180,6 +201,7 @@ function Cart() {
               onChange={(e) => setBarcode(e.target.value)}
               placeholder="Buscar por código de barras"
               className="cart-input"
+              ref={inputRef}
             />
             <button type="submit" className="save-button">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>

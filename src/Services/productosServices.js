@@ -1,4 +1,4 @@
-import { getFirestore, collection, query, where, getDocs, doc, updateDoc, addDoc } from "firebase/firestore";
+import { getFirestore, collection, query, where, getDocs, doc, updateDoc, addDoc,getDoc } from "firebase/firestore";
 import firebase from "../config/firebase";
 
 const db = getFirestore();
@@ -83,34 +83,78 @@ export async function remove(id) {
 }
 
 export const getProductByBarcode = async (barcode) => {
-    const productsCollection = collection(db, "Productos");
-    const q = query(productsCollection, where("Barcode", "==", barcode));
-    const querySnapshot = await getDocs(q);
+    try {
+        const productsCollection = collection(db, "Productos");
+        const promoRef = collection(db, 'promociones');
+        const q = query(productsCollection, where("Barcode", "==", barcode));
+        const promoQuery = query(promoRef, where('Barcode', '==', barcode));
+        const querySnapshot = await getDocs(q);
+        const promoSnapshot = await getDocs(promoQuery);
+        
+        if (!querySnapshot.empty) {
+            const doc = querySnapshot.docs[0];
+            return { id: doc.id, data: doc.data(), type: 'product' };
+        } else if (!promoSnapshot.empty) {
+            const doc = promoSnapshot.docs[0];
+            return { id: doc.id, data: doc.data(), type: 'promotion' };
+        } else {
+            return null;
+        }
+    } catch (error) {
+        console.error('Error al buscar el producto:', error);
+        throw error; // Re-lanzar el error para ser manejado por el componente
+    }
+};
+export const createPromotion = async (promotion) => {
+    try {
+        const titleNormalized = promotion.title.toLowerCase().replace(/\s+/g, '');
+        const dataWithNormalizedFields = {
+            ...promotion,
+            title_normalized: titleNormalized,
+        };
 
-    if (!querySnapshot.empty) {
-        const doc = querySnapshot.docs[0];
-        return { id: doc.id, data: doc.data() };
-    } else {
-        return null;
+        // Referencia al documento en la colección "promociones"
+        const promotionRef = firebase.firestore().collection('promociones').doc();
+        await promotionRef.set(dataWithNormalizedFields);
+
+        // Referencia al documento en la colección "Productos"
+        const productRef = firebase.firestore().collection('Productos').doc();
+        await productRef.set(dataWithNormalizedFields);
+    } catch (error) {
+        console.error('Error al crear la promoción:', error);
+        throw error;
     }
 };
 
+
 export const getProductByTitle = async (title) => {
-    const titleNormalized = title.toLowerCase().replace(/\s+/g, '');
+try{
     const productsCollection = collection(db, "Productos");
+    const titleNormalized = title.toLowerCase().replace(/\s+/g, '');
+    const promoRef = collection(db, 'promociones');
+    const promoQuery = query(promoRef, where('title', '==', title));
     const q = query(
         productsCollection,
         where("title_normalized", ">=", titleNormalized),
         where("title_normalized", "<=", titleNormalized + '\uf8ff')
     );
     const querySnapshot = await getDocs(q);
+    const promoSnapshot = await getDocs(promoQuery);
 
     if (!querySnapshot.empty) {
         const doc = querySnapshot.docs[0];
-        return { id: doc.id, data: doc.data() };
-    } else {
+        return { id: doc.id, data: doc.data(), type: 'product' };
+    }else if (!promoSnapshot.empty) {
+        const doc = promoSnapshot.docs[0];
+        return { id: doc.id, data: doc.data(), type: 'promotion' };
+    } 
+    else {
         return null;
     }
+}catch(error){
+    console.error('Error al buscar el producto:', error);
+        throw error; // Re-lanzar el error para ser manejado por el componente
+}
 };
 
 export const updateProductStock = async (id, newStock) => {
@@ -155,3 +199,36 @@ export const fetchExpensesData = async () => {
         total: parseFloat(doc.data().amount) || 0,
     })).filter(expense => expense.date !== null);
 };
+
+export const sellPromotion = async (promotionId, quantitySold) => {
+    try {
+        // Obtener la promoción desde la base de datos
+        const promotionRef = firebase.firestore().collection('promociones').doc(promotionId);
+        const promotionDoc = await promotionRef.get();
+        if (!promotionDoc.exists) {
+            throw new Error('La promoción no existe');
+        }
+        const promotionData = promotionDoc.data();
+        // Recorrer los productos en la promoción para restar stock
+        for (const product of promotionData.products) {
+            const productRef = doc(db, "Productos", product.id);
+            const productDoc = await getDoc(productRef);
+            if (!productDoc.exists()) {
+                throw new Error(`El producto con ID ${product.id} no existe`);
+            }
+            const productData = productDoc.data();
+            const newStock = productData.stock - (product.quantity * quantitySold);
+            // Asegurarse de que el stock no sea negativo
+            if (newStock < 0) {
+                throw new Error(`Stock insuficiente para el producto ${productData.title}`);
+            }
+            // Actualizar el stock del producto utilizando la función `updateProductStock`
+            await updateProductStock(product.id, newStock);
+        }
+        // Opcional: Registrar la venta de la promoción
+    } catch (error) {
+        console.error('Error al realizar la venta de la promoción:', error);
+        throw error;
+    }
+};
+
