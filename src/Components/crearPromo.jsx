@@ -141,29 +141,30 @@ function CrearPromocion() {
     setError('');
     setSuccess('');
     setLoading(true);
-
+  
     if (!promotionTitle || !promotionPrice || !promotionBarcode) {
       setError('Por favor, complete todos los campos requeridos.');
       setLoading(false);
       return;
     }
-
+  
     if (productsInPromotion.length === 0) {
       setError('Agregue al menos un producto a la promoción.');
       setLoading(false);
       return;
     }
-
+  
     try {
       const promotionStock = Math.min(
         ...productsInPromotion.map(product => product.data.stock || 0)
       );
-
+  
       const newPromotion = {
         title: promotionTitle,
         price: parseFloat(promotionPrice),
         Barcode: promotionBarcode,
         stock: promotionStock,
+        category: 'promo', // Aquí se asigna la categoría "promo"
         products: productsInPromotion.map(product => ({
           id: product.id,
           quantity: 1, // Puedes ajustar la cantidad según tus necesidades
@@ -171,9 +172,9 @@ function CrearPromocion() {
         })),
         isPromo: true
       };
-
+  
       await createPromotion(newPromotion);
-
+  
       setPromotionTitle('');
       setPromotionBarcode('');
       setProductsInPromotion([]);
@@ -186,6 +187,7 @@ function CrearPromocion() {
       setLoading(false);
     }
   };
+  
 
   return (
     <div style={style.container}>

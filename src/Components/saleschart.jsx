@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { Spinner } from 'react-bootstrap';
-import { collection, query, where, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, query, where, getDocs, getFirestore, orderBy } from 'firebase/firestore';
 
 const db = getFirestore();
 
@@ -11,7 +11,8 @@ const fetchSalesData = async (startDate, endDate) => {
         const salesQuery = query(
             collection(db, 'sales'),
             where('timestamp', '>=', startDate),
-            where('timestamp', '<=', endDate)
+            where('timestamp', '<=', endDate),
+            orderBy('timestamp', 'asc')  // Ordena los resultados por fecha
         );
         const querySnapshot = await getDocs(salesQuery);
         return querySnapshot.docs.map(doc => ({
@@ -53,14 +54,14 @@ const SalesChart = ({ setTotalWeeklySales, setTotalPreviousWeekSales }) => {
                 const [startOfCurrentWeek, endOfCurrentWeek] = getWeekRange(today);
                 const [startOfPreviousWeek, endOfPreviousWeek] = getWeekRange(today, -1);
 
-                // Realizar una consulta para obtener todas las ventas dentro del rango
-                const salesList = await fetchSalesData(startOfCurrentWeek, endOfCurrentWeek);
-                const previousWeekSalesList = await fetchSalesData(startOfPreviousWeek, endOfPreviousWeek);
+                // Realizar una consulta sin límite
+                const salesList = await fetchSalesData(startOfPreviousWeek, endOfCurrentWeek);
 
-                const salesMap = (salesList) => {
+                // Función para mapear ventas a una semana específica
+                const salesMap = (salesList, weekRange) => {
                     const weeklySales = Array(7).fill(0);
                     salesList.forEach(({ timestamp, total }) => {
-                        if (timestamp) {
+                        if (timestamp && timestamp >= weekRange[0] && timestamp <= weekRange[1]) {
                             const dayIndex = (timestamp.getDay() + 6) % 7; // Lunes = 0
                             weeklySales[dayIndex] += total;
                         }
@@ -68,9 +69,9 @@ const SalesChart = ({ setTotalWeeklySales, setTotalPreviousWeekSales }) => {
                     return weeklySales;
                 };
 
-                // Procesar datos de ventas
-                const currentWeekSales = salesMap(salesList);
-                const previousWeekSales = salesMap(previousWeekSalesList);
+                // Procesar datos de ventas para ambas semanas
+                const currentWeekSales = salesMap(salesList, [startOfCurrentWeek, endOfCurrentWeek]);
+                const previousWeekSales = salesMap(salesList, [startOfPreviousWeek, endOfPreviousWeek]);
 
                 setSalesData(currentWeekSales);
                 setPreviousWeekData(previousWeekSales);
@@ -78,8 +79,13 @@ const SalesChart = ({ setTotalWeeklySales, setTotalPreviousWeekSales }) => {
                 const totalCurrentWeekSales = currentWeekSales.reduce((a, b) => a + b, 0);
                 const totalPreviousWeekSales = previousWeekSales.reduce((a, b) => a + b, 0);
 
-                if (setTotalWeeklySales) setTotalWeeklySales(totalCurrentWeekSales);
-                if (setTotalPreviousWeekSales) setTotalPreviousWeekSales(totalPreviousWeekSales);
+                // Solo actualiza el estado si es necesario
+                if (setTotalWeeklySales && totalCurrentWeekSales !== salesData.reduce((a, b) => a + b, 0)) {
+                    setTotalWeeklySales(totalCurrentWeekSales);
+                }
+                if (setTotalPreviousWeekSales && totalPreviousWeekSales !== previousWeekData.reduce((a, b) => a + b, 0)) {
+                    setTotalPreviousWeekSales(totalPreviousWeekSales);
+                }
             } catch (error) {
                 console.error('Error al cargar los datos de ventas:', error);
             } finally {
@@ -89,6 +95,10 @@ const SalesChart = ({ setTotalWeeklySales, setTotalPreviousWeekSales }) => {
 
         loadSalesData();
     }, [setTotalWeeklySales, setTotalPreviousWeekSales]);
+
+    // Usar memoización para evitar recargar los datos si no hay cambios
+    const cachedSalesData = useMemo(() => salesData, [salesData]);
+    const cachedPreviousWeekData = useMemo(() => previousWeekData, [previousWeekData]);
 
     if (loading) {
         return (
@@ -122,13 +132,13 @@ const SalesChart = ({ setTotalWeeklySales, setTotalPreviousWeekSales }) => {
         series: [
             {
                 name: 'Semana Actual',
-                data: salesData,
+                data: cachedSalesData,
                 type: 'bar',
                 itemStyle: { color: '#FFAE00' }
             },
             {
                 name: 'Semana Anterior',
-                data: previousWeekData,
+                data: cachedPreviousWeekData,
                 type: 'bar',
                 itemStyle: { color: '#00AEFF' }
             }

@@ -89,6 +89,7 @@ function Cart() {
       setAlert({ variant: "", text: "" });
     }, 3000); // La alerta desaparecerá después de 3 segundos
   };
+
   const confirmPurchase = async () => {
     if (!paymentMethod) {
       setPaymentError(true);
@@ -98,6 +99,10 @@ function Cart() {
     if (paymentMethod === 'Deuda' && !debtorName) {
       showAlert('danger', 'Por favor, ingrese el nombre del deudor.');
       return;
+    }
+    if (paymentMethod === 'Efectivo') {
+      const efect =  prompt('¿Con cuanto abona el cliente?');
+      prompt('El vuelto es', efect - total) 
     }
 
     try {

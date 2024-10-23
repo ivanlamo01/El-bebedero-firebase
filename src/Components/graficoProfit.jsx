@@ -1,38 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { fetchSalesData, fetchExpensesData } from '../Services/productosServices';
 
 const processData = (sales, expenses) => {
-    const aggregatedData = {};
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
 
-    const aggregate = (data, type) => {
-        data.forEach(item => {
-            if (!aggregatedData[item.date]) {
-                aggregatedData[item.date] = { sales: 0, expenses: 0 };
+    // Usa un solo objeto para almacenar datos agregados por fecha
+    const aggregatedData = sales.concat(expenses).reduce((acc, item) => {
+        const itemDate = new Date(item.date);  // Asegúrate de que sea una fecha válida
+
+        if (itemDate >= oneMonthAgo) {  // Filtra los datos del último mes
+            const dateStr = item.date;
+            if (!acc[dateStr]) {
+                acc[dateStr] = { sales: 0, expenses: 0 };
             }
-            aggregatedData[item.date][type] += item.total;
-        });
-    };
+            if (item.total && item.products) {  // Si es una venta
+                acc[dateStr].sales += item.total;
+            } else {  // Si es un gasto
+                acc[dateStr].expenses += item.total;
+            }
+        }
+        return acc;
+    }, {});
 
-    aggregate(sales, 'sales');
-    aggregate(expenses, 'expenses');
-
-    return Object.entries(aggregatedData).map(([date, totals]) => ({
-        date,
-        sales: totals.sales,
-        expenses: totals.expenses,
-    })).sort((a, b) => new Date(a.date) - new Date(b.date));
+    // Devuelve el array de datos procesados
+    return Object.entries(aggregatedData)
+        .map(([date, totals]) => ({
+            date,
+            sales: totals.sales,
+            expenses: totals.expenses,
+        }))
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
 };
 
 const SalesChartProfit = () => {
-    const [data, setData] = useState({ sales: [], expenses: [] });
+    const [data, setData] = useState({ sales: [], expenses: [], dates: [] });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const loadData = async () => {
             try {
                 const [sales, expenses] = await Promise.all([fetchSalesData(), fetchExpensesData()]);
+
+                // Procesa y filtra los datos una sola vez
                 const processedData = processData(sales, expenses);
+
+                // Actualiza el estado una sola vez con los datos procesados
                 setData({
                     sales: processedData.map(item => item.sales),
                     expenses: processedData.map(item => item.expenses),
@@ -48,6 +62,11 @@ const SalesChartProfit = () => {
         loadData();
     }, []);
 
+    // Usa memoización para evitar recálculos innecesarios
+    const cachedSalesData = useMemo(() => data.sales, [data.sales]);
+    const cachedExpensesData = useMemo(() => data.expenses, [data.expenses]);
+    const cachedDates = useMemo(() => data.dates, [data.dates]);
+
     if (loading) {
         return <div>Cargando datos...</div>;
     }
@@ -58,7 +77,7 @@ const SalesChartProfit = () => {
         tooltip: { trigger: 'axis' },
         xAxis: {
             type: 'category',
-            data: data.dates,
+            data: cachedDates,
             name: 'Fecha',
         },
         yAxis: {
@@ -77,16 +96,16 @@ const SalesChartProfit = () => {
         ],
         series: [
             {
-                name: 'Ventas',
+                name: 'Gastos',
                 type: 'line',
-                data: data.sales,
+                data: cachedExpensesData,
                 smooth: true,
                 itemStyle: { color: 'green' },
             },
             {
-                name: 'Gastos',
+                name: 'Ventas',
                 type: 'line',
-                data: data.expenses,
+                data: cachedSalesData,
                 smooth: true,
                 itemStyle: { color: 'red' },
             },
