@@ -102,17 +102,55 @@
     color: white;
     padding: 10px;
 }
-
+.card5 h5{
+    color: #FFAE00;
+    padding: 5px;
+}
 .card5 {
+    color: white;
     background-color: rgba(33, 33, 33, 255);
     transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 4px 8px black;
     border-radius: 20px;
-    height: 55%;
+    height: 50%;
     padding-top: 10px;
     width: 100%;
     padding-left: 10px;
+    
 }
+.card5:hover {
+    background: linear-gradient(to top, #434343, #000000);
+    transform: translateY(-5px);
+    /* Desplaza hacia arriba 5px */
+    box-shadow: 0 8px 16px black;
+}
+.top-products-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    color: white;
+    margin-top: 10px;
+    padding: 10px;
+  }
+  
+  .top-products-table th,
+  .top-products-table td {
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .top-products-table th {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
+  .top-products-table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .top-products-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+  }
 
 .lastSales:hover {
     background: linear-gradient(to top, #434343, #000000);

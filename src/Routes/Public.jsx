@@ -14,6 +14,7 @@ import Cart from '../Components/cart';
 import DebtorsList from '../Pages/DebtorList';
 import SalesList from '../Pages/SalesList';
 import ExpensesTable from '../Pages/expensesTable';
+import Graficos from '../Pages/Graficos';
 
 
 function Public() {
@@ -27,6 +28,7 @@ function Public() {
             <Routes>
                     <Route  path="/" element={<Home/>} />
                     <Route  path="/inventario" element={<Inventario/>} />
+                    <Route  path="/graficos" element={<Graficos/>} />
                     <Route  path="/cart" element={<Cart/>} />
                     <Route  path="/sales" element={<SalesList/>} />
                     <Route  path="/expenses" element={<ExpensesTable/>} />

@@ -5,7 +5,10 @@
     color:white;
     padding-bottom: 1%;
 }
-
+.add-debtor{
+    display: flex;
+    margin-top: 1%;
+}
 .debtors-list table {
     width: 100%;
     table-layout: fixed;
