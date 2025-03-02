@@ -5,8 +5,8 @@ import {
   doc,
   getDocs,
   getFirestore,
-  updateDoc,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import "../styles/debtorList.css";
 
@@ -16,9 +16,9 @@ const DebtorsList = () => {
   const [debtors, setDebtors] = useState([]);
   const [newDebtorName, setNewDebtorName] = useState("");
   const [expandedDebtor, setExpandedDebtor] = useState(null);
-  const [editingDebtor, setEditingDebtor] = useState(null);
-  const [editedTotalAmount, setEditedTotalAmount] = useState("");
-  const [loading, setLoading] = useState(false); // Estado para mostrar el loading
+  const [loading, setLoading] = useState(false);
+  const [editingDebtor, setEditingDebtor] = useState();
+  const [editedTotalAmount, setEditedTotalAmount] = useState();
 
   useEffect(() => {
     const fetchDebtors = async () => {
@@ -29,7 +29,6 @@ const DebtorsList = () => {
           ...doc.data(),
         }));
 
-        // Agrupar deudores por nombre
         const groupedDebtors = debtorsList.reduce((acc, debtor) => {
           const name = debtor.name;
           if (!acc[name]) {
@@ -57,14 +56,15 @@ const DebtorsList = () => {
     }
 
     try {
-      setLoading(true); // Activar loading
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simular carga de 1 segundo
+      setLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const newDebtRef = doc(collection(db, "debts"));
       await setDoc(newDebtRef, {
         name: newDebtorName,
         amount: 0,
         timestamp: new Date(),
+        products: [],
       });
 
       setDebtors([
@@ -77,11 +77,16 @@ const DebtorsList = () => {
     } catch (error) {
       console.error("Error al agregar el deudor: ", error);
     } finally {
-      setLoading(false); // Desactivar loading
+      setLoading(false);
     }
+  };
+  const startEditingTotalAmount = (debtor) => {
+    setEditingDebtor(debtor.name);
+    setEditedTotalAmount(debtor.totalAmount);
   };
   const handleUpdateTotalAmount = async (debtorName, newTotalAmount) => {
     try {
+      setLoading(true);
       const debtor = debtors.find((d) => d.name === debtorName);
       if (!debtor) return;
 
@@ -109,35 +114,17 @@ const DebtorsList = () => {
       setDebtors(updatedDebtors);
       setEditingDebtor(null);
       setEditedTotalAmount("");
+      alert("Total actualizado exitosamente."); // Alerta al finalizar
     } catch (error) {
       console.error("Error al actualizar el total de la deuda: ", error);
+      alert("Error al actualizar la deuda.");
+    } finally {
+      setLoading(false);
     }
   };
-
-  const handleDeleteDebtor = async (debtorName) => {
-    const confirmDelete = window.confirm(
-      "¿Estás seguro de que deseas eliminar todas las deudas de este deudor?"
-    );
-    if (confirmDelete) {
-      try {
-        const debtor = debtors.find((d) => d.name === debtorName);
-        if (debtor) {
-          await Promise.all(
-            debtor.debts.map((debt) => deleteDoc(doc(db, "debts", debt.id)))
-          );
-          setDebtors(debtors.filter((d) => d.name !== debtorName));
-          setEditingDebtor(null); // Cerrar el modal tras eliminar
-        }
-      } catch (error) {
-        console.error("Error al eliminar el deudor: ", error);
-      }
-    }
-  };
-
   const handleDeleteDebt = async (debtId, debtorName) => {
     try {
       await deleteDoc(doc(db, "debts", debtId));
-
       const updatedDebtors = debtors.map((d) => {
         if (d.name === debtorName) {
           const updatedDebts = d.debts.filter((debt) => debt.id !== debtId);
@@ -149,20 +136,35 @@ const DebtorsList = () => {
         }
         return d;
       });
-
       setDebtors(updatedDebtors);
     } catch (error) {
       console.error("Error al eliminar la deuda: ", error);
     }
   };
+  const handleDeleteDebtor = async (debtorName) => {
+    try {
+      const debtor = debtors.find((d) => d.name === debtorName);
+      if (!debtor) return;
+
+      // Eliminar todas las deudas del deudor en Firestore
+      await Promise.all(
+        debtor.debts.map(async (debt) => {
+          const debtRef = doc(db, "debts", debt.id);
+          await deleteDoc(debtRef);
+        })
+      );
+
+      // Filtrar al deudor eliminado de la lista local
+      const updatedDebtors = debtors.filter((d) => d.name !== debtorName);
+      setDebtors(updatedDebtors);
+      setEditingDebtor(null);
+    } catch (error) {
+      console.error("Error al eliminar el deudor: ", error);
+    }
+  };
 
   const toggleDetails = (name) => {
     setExpandedDebtor(expandedDebtor === name ? null : name);
-  };
-
-  const startEditingTotalAmount = (debtor) => {
-    setEditingDebtor(debtor.name);
-    setEditedTotalAmount(debtor.totalAmount);
   };
 
   return (
@@ -175,7 +177,7 @@ const DebtorsList = () => {
           value={newDebtorName}
           onChange={(e) => setNewDebtorName(e.target.value)}
           placeholder="Nombre del nuevo deudor"
-          style={{ width: "20%", padding: "10px" ,margin: "1%"}}
+          style={{ width: "20%", padding: "10px", margin: "1%" }}
         />
         <button
           onClick={handleAddDebtor}
@@ -208,6 +210,8 @@ const DebtorsList = () => {
                       ? "Ocultar Detalles"
                       : "Ver Detalles"}
                   </button>
+                </td>
+                <td>
                   <button
                     onClick={() => startEditingTotalAmount(debtor)}
                     className="save-button"
@@ -229,18 +233,17 @@ const DebtorsList = () => {
                             ).toLocaleString()}
                           </div>
                           <div>Monto: ${debt.amount.toFixed(2)}</div>
-                          <div>
-                            Productos:
-                            <ul>
-                              {debt.products.map((product, idx) => (
+                          <div>Productos:</div>
+                          <ul>
+                            {debt.products &&
+                              debt.products.map((product, idx) => (
                                 <li key={idx}>
                                   {product.name} - $
                                   {parseFloat(product.price).toFixed(2)} x{" "}
                                   {product.quantity}
                                 </li>
                               ))}
-                            </ul>
-                          </div>
+                          </ul>
                           <button
                             onClick={() =>
                               handleDeleteDebt(debt.id, debtor.name)
@@ -273,8 +276,9 @@ const DebtorsList = () => {
               handleUpdateTotalAmount(editingDebtor, editedTotalAmount)
             }
             className="save-button"
+            disabled={loading}
           >
-            Guardar
+            {loading ? "Guardando..." : "Guardar"}
           </button>
           <button
             onClick={() => setEditingDebtor(null)}
