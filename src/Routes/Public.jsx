@@ -2,7 +2,6 @@ import Registro from '../Pages/Registro';
 import Inventario from '../Pages/Inventario';
 import Login from '../Pages/Login';
 import NavBar from '../Components/NavBar';
-import DetalleProd from '../Pages/DetalleProd';
 import Home from '../Pages/Home'
 import { BrowserRouter as Router,Routes,Route } from 'react-router-dom';
 import ProductosAlta from '../Pages/ProductosAlta';
@@ -35,7 +34,6 @@ function Public() {
                     <Route path="/debtors" element={<DebtorsList/>} />
                     <Route  path="/alta" element={<Registro/>}/>
                     <Route  path="/ingresar" element={<Login/>}/>
-                    <Route  path="/detalle/:detalleId" element={<DetalleProd />}/>
                     <Route  path="/detalle/editar/:detalleId" element={<ProductosModificar />}/>
                     <Route  path="/inventario/ProductosAlta" element={<ProductosAlta />}/>
                 </Routes>
